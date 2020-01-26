@@ -1,3 +1,26 @@
+# Favourites in one place
+
+I was creating similiar projects like tvSeries or Places
+but here I want only have short infromation about everything I always forget.
+
+So on this app you can create profile and keep all your favourites:
+
+- places
+- tv series
+- games
+- films
+- music
+
+- and meybe more...
+
+let see what happen
+
+For now I would like to create app usefull for everyone
+
+So... enjoy :)
+
+## ==============================
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
