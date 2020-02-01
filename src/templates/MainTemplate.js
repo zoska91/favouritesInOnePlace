@@ -1,6 +1,5 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { theme } from '../themes/mainTheme';
@@ -27,8 +26,6 @@ const MainTemplate = ({ children }) => {
   );
 };
 
-MainTemplate.propTypes = {
-  children: PropTypes.element.isRequired
-};
+//
 
 export default MainTemplate;

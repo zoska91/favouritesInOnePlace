@@ -2,9 +2,10 @@ export const theme = {
   primary: 'black',
   secondary: 'white',
   font: '#6F8CDB',
-  shadow: '#C5CADB',
+  shadow: '#C6CADB',
   shadowLight: '#E0E9F9',
-  lightBg: '#E0E9F9'
+  lightBg: '#E0E9F9',
+  iconBg: '#3F5A75'
 };
 
 //636C75 - szary

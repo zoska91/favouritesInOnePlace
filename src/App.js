@@ -4,11 +4,13 @@ import { routes } from './routes';
 
 import Home from './views/Home';
 import MainTemplate from './templates/MainTemplate';
+import Header from './components/organism/Header';
 
 function App() {
   return (
     <Router>
       <MainTemplate>
+        <Header />
         <Switch>
           <Route path={routes.home} component={Home} />
         </Switch>
