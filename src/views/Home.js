@@ -5,6 +5,7 @@ import Input from '../components/atoms/Input';
 
 const StyledWrapper = styled.main`
   width: 100vw;
+  text-align: center;
 `;
 
 const Home = () => {

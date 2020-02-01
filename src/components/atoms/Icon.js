@@ -1,26 +1,21 @@
-import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
-const StyledWrapper = styled.li`
+const Icon = styled.button`
   display: block;
-  background-color: ${({ theme }) => theme.iconBg};
-  color: ${({ theme }) => theme.secondary};
+  border: 5px solid ${({ theme }) => theme.secondary};
   width: 15vw;
-  height: width;
+  height: 15vw;
   border-radius: 10px;
-`;
-
-const IconLink = styled(NavLink)`
+  box-shadow: inset 3px 3px 5px 2px ${({ theme }) => theme.shadow};
   background-image: url(${({ icon }) => icon});
-`;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 60%;
+  background-color: transparent;
 
-const Icon = () => {
-  return (
-    <StyledWrapper>
-      <p>link</p>
-    </StyledWrapper>
-  );
-};
+  &:nth-child(${({ activeGroup }) => activeGroup + 1}) {
+    border-color: ${({ theme }) => theme.iconActiveBorder};
+  }
+`;
 
 export default Icon;

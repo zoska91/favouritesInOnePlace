@@ -5,7 +5,7 @@ export const theme = {
   shadow: '#C6CADB',
   shadowLight: '#E0E9F9',
   lightBg: '#E0E9F9',
-  iconBg: '#3F5A75'
+  iconActiveBorder: '#3F5A75'
 };
 
 //636C75 - szary

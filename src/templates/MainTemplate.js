@@ -8,10 +8,13 @@ import SideBar from '../components/organism/SideBar';
 
 const StyledWrapper = styled.div`
   height: 100vh;
+  max-width: 1024px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2vh;
+  padding: 2vh 0;
+  overflow: hidden;
+  width: 100vw;
 `;
 
 const MainTemplate = ({ children }) => {
