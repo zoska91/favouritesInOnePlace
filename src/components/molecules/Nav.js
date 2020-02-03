@@ -17,7 +17,6 @@ const StyledWrapper = styled.ul`
 
 const Nav = () => {
   let [activeGroup, pickGroup] = useState(3);
-  console.log(activeGroup);
   return (
     <StyledWrapper activeGroup={activeGroup}>
       <Flicking
@@ -26,7 +25,6 @@ const Nav = () => {
         defaultIndex={3}
         onSelect={e => {
           pickGroup((activeGroup = e.index));
-          console.log(e);
         }}
       >
         <Icon icon={ImgMusic} activeGroup={activeGroup} />

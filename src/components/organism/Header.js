@@ -6,6 +6,7 @@ import Nav from '../molecules/Nav';
 
 const StyledWrapper = styled.header`
   padding: 0 5vw;
+  height: auto;
 `;
 
 //TODO name from DB
