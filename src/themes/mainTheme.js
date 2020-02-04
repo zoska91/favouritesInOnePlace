@@ -7,7 +7,8 @@ export const theme = {
   lightBg: '#E0E9F9',
   iconActiveBorder: '#3F5A75',
   submitButton: '#3F5A75',
-  closeButton: '#750000'
+  closeButton: '#750000',
+  titleBg: '#CFE2F5'
 };
 
 //636C75 - szary

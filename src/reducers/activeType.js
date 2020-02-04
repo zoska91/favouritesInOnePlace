@@ -1,4 +1,5 @@
 import { CHANGE_ACTIVE_TYPE } from '../actions/activeTyp';
+import { SET_NAME_TYPE } from '../actions/activeTyp';
 
 const INITIAL_STATE = {
   name: 'series',
@@ -11,6 +12,11 @@ const activeTypeReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         index: action.item
+      };
+    case SET_NAME_TYPE:
+      return {
+        ...state,
+        name: action.item
       };
 
     default:
