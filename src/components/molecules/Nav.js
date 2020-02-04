@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Flicking from '@egjs/react-flicking';
+import { connect } from 'react-redux';
+import { changeActiveType } from '../../actions/activeTyp';
 
 import Icon from '../atoms/Icon';
 import ImgMusic from '../../assets/music.png';
@@ -11,31 +13,41 @@ import ImgBook from '../../assets/book.png';
 import ImgGame from '../../assets/game.png';
 
 const StyledWrapper = styled.ul`
-  padding: 0 3vw;
   margin: 6vh 0 0;
+  padding-left: 0;
+  /* height: 10vh; */
 `;
 
-const Nav = () => {
-  let [activeGroup, pickGroup] = useState(3);
+const Nav = ({ activeTypeIndex, changeType }) => {
+  // let [activeGroup, pickGroup] = useState(3);
   return (
-    <StyledWrapper activeGroup={activeGroup}>
+    <StyledWrapper activeGroup={activeTypeIndex}>
       <Flicking
         className='flicking flicking0'
-        gap={15}
+        gap={10}
         defaultIndex={3}
         onSelect={e => {
-          pickGroup((activeGroup = e.index));
+          changeType(e.index);
         }}
       >
-        <Icon icon={ImgMusic} activeGroup={activeGroup} />
-        <Icon icon={ImgFilm} activeGroup={activeGroup} />
-        <Icon icon={ImgLink} activeGroup={activeGroup} />
-        <Icon icon={ImgNote} activeGroup={activeGroup} />
-        <Icon icon={ImgBook} activeGroup={activeGroup} />
-        <Icon icon={ImgGame} activeGroup={activeGroup} />
+        <Icon icon={ImgMusic} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgFilm} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgLink} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgNote} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgBook} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgGame} activeGroup={activeTypeIndex} />
       </Flicking>
     </StyledWrapper>
   );
 };
 
-export default Nav;
+const mapStateToProps = ({ activeType }) => ({
+  activeTypeIndex: activeType.index,
+  activeTypeName: activeType.name
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeType: type => dispatch(changeActiveType(type))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

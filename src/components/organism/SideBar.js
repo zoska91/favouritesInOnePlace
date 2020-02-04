@@ -92,7 +92,7 @@ const StyledIcon = styled.li`
 `;
 
 const SideBar = () => {
-  let [isOpen, toggleSidebar] = useState(true);
+  let [isOpen, toggleSidebar] = useState(false);
   let [typeOfUserPanel, toggleUserPanel] = useState('login');
 
   const setTypeOfUserPanel = value => {
