@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import Input from '../components/atoms/Input';
+import Search from '../components/organism/Search';
 
 const StyledWrapper = styled.main`
   width: 100vw;
@@ -22,7 +22,7 @@ const Home = ({ activeTypeName }) => {
   return (
     <StyledWrapper>
       <SyledTitle>{activeTypeName}</SyledTitle>
-      <Input />
+      <Search />
     </StyledWrapper>
   );
 };

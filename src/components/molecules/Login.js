@@ -77,7 +77,7 @@ const Login = ({ setTypeOfUserPanel }) => {
     <Form
       onSubmit={onSubmit}
       initialValues={{ login: '', password: '' }}
-      render={({ handleSubmit, form, submitting, pristine, values }) => (
+      render={({ handleSubmit }) => (
         <StyledForm onSubmit={handleSubmit}>
           <StyledTitle>Log in</StyledTitle>
           <StyledFormElement>
