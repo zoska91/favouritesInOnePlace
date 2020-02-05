@@ -8,14 +8,15 @@ const StyledWrapper = styled.main`
   width: 100vw;
   text-align: center;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const SyledTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
-  box-shadow: 5px 10px 10px 4px ${({ theme }) => theme.titleBg};
   padding: 2vh;
-  margin-bottom: 5vh;
+  margin-bottom: 2vh;
 `;
 
 const Home = ({ activeTypeName }) => {
