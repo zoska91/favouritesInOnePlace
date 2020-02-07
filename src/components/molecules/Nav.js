@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Flicking from '@egjs/react-flicking';
+import { connect } from 'react-redux';
+import { changeActiveType } from '../../actions/activeTyp';
+import { setNameType } from '../../actions/activeTyp';
 
 import Icon from '../atoms/Icon';
 import ImgMusic from '../../assets/music.png';
@@ -9,35 +12,58 @@ import ImgLink from '../../assets/link.png';
 import ImgNote from '../../assets/note.png';
 import ImgBook from '../../assets/book.png';
 import ImgGame from '../../assets/game.png';
+import ImgTvSeries from '../../assets/tvseries.png';
 
 const StyledWrapper = styled.ul`
-  padding: 0 3vw;
   margin: 6vh 0 0;
+  padding-left: 0;
+  /* height: 10vh; */
 `;
 
-const Nav = () => {
-  let [activeGroup, pickGroup] = useState(3);
-  console.log(activeGroup);
+const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn }) => {
+  const types = [
+    { index: 0, name: 'music' },
+    { index: 1, name: 'films' },
+    { index: 2, name: 'links' },
+    { index: 3, name: 'notes' },
+    { index: 4, name: 'books' },
+    { index: 5, name: 'games' },
+    { index: 6, name: 'tvseries' }
+  ];
+
+  const activeType = e => {
+    changeTypeFn(e.index);
+    const name = types.filter(el => el.index === e.index);
+    setNameTypeFn(name[0].name);
+  };
+
   return (
-    <StyledWrapper activeGroup={activeGroup}>
+    <StyledWrapper activeGroup={activeTypeIndex}>
       <Flicking
         className='flicking flicking0'
-        gap={15}
+        gap={10}
         defaultIndex={3}
-        onSelect={e => {
-          pickGroup((activeGroup = e.index));
-          console.log(e);
-        }}
+        onSelect={e => activeType(e)}
       >
-        <Icon icon={ImgMusic} activeGroup={activeGroup} />
-        <Icon icon={ImgFilm} activeGroup={activeGroup} />
-        <Icon icon={ImgLink} activeGroup={activeGroup} />
-        <Icon icon={ImgNote} activeGroup={activeGroup} />
-        <Icon icon={ImgBook} activeGroup={activeGroup} />
-        <Icon icon={ImgGame} activeGroup={activeGroup} />
+        <Icon icon={ImgMusic} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgFilm} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgLink} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgNote} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgBook} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgGame} activeGroup={activeTypeIndex} />
+        <Icon icon={ImgTvSeries} activeGroup={activeTypeIndex} />
       </Flicking>
     </StyledWrapper>
   );
 };
 
-export default Nav;
+const mapStateToProps = ({ activeType }) => ({
+  activeTypeIndex: activeType.index
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeTypeFn: type => dispatch(changeActiveType(type)),
+  setNameTypeFn: name => dispatch(setNameType(name))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 const Icon = styled.button`
   display: block;
   border: 5px solid ${({ theme }) => theme.secondary};
-  width: 15vw;
-  height: 15vw;
+  width: 8vh;
+  height: 8vh;
   border-radius: 10px;
   box-shadow: inset 3px 3px 5px 2px ${({ theme }) => theme.shadow};
   background-image: url(${({ icon }) => icon});
