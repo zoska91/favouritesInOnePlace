@@ -1,6 +1,7 @@
 import userSchema from './user';
 import dataSchema from './data';
 import groupSchema from './group';
+import gameSchema from './game';
 
 const linkSchema = `
 type Query {
@@ -12,4 +13,4 @@ type Mutation {
 }
 `;
 
-export default [linkSchema, userSchema, dataSchema, groupSchema];
+export default [linkSchema, userSchema, dataSchema, groupSchema, gameSchema];
