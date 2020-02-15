@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
   Query: {
-    findGameByName: async (parent, { name }, { models }) => {
+    findGameByName: async (parent, { name }) => {
       const resp = await axios({
         url: 'https://api-v3.igdb.com/games',
         method: 'POST',

@@ -19,17 +19,11 @@ For now I would like to create app usefull for everyone
 
 So... enjoy :)
 
-
 ##=========================
 
 edit 7.02.2020
-I added back-end in NodeJS (experess) with CRUD in grahql. 
+I added back-end in NodeJS (experess) with api in grahql.
 
+to run app (with server):
 
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-
+### `npm dev`
