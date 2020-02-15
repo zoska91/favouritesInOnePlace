@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "apollo-boost": "^0.4.7",
+    "apollo-datasource-rest": "^0.7.0",
     "concurrently": "^5.1.0",
     "final-form": "^4.18.7",
     "graphql": "^14.6.0",

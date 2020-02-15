@@ -1,7 +1,7 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import { makeExecutableSchema } from 'graphql-tools';
-
+import cors from 'cors';
 import resolvers from './resolvers';
 import typeDefs from './schema';
 import models from './db/models';
@@ -19,6 +19,7 @@ app.use(getUserIdMIddleware);
 
 app.use(
   '/graphql',
+  cors(),
   graphqlHTTP(req => ({
     schema,
     context: { models, userId: req.userId },

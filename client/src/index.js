@@ -5,10 +5,19 @@ import store from './store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql'
+});
+
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 
