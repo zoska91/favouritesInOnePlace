@@ -23,7 +23,7 @@ const Home = ({ activeTypeName }) => {
   return (
     <StyledWrapper>
       <SyledTitle>{activeTypeName}</SyledTitle>
-      <Search />
+      <div>list</div>
     </StyledWrapper>
   );
 };

@@ -67,6 +67,7 @@ const StyledHome = styled.li`
   box-shadow: inset 3px 3px 5px 3px ${({ theme }) => theme.shadow};
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   a {
     display: flex;

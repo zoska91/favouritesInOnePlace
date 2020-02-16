@@ -4,6 +4,7 @@ import Flicking from '@egjs/react-flicking';
 import { connect } from 'react-redux';
 import { changeActiveType } from '../../actions/activeTyp';
 import { setNameType } from '../../actions/activeTyp';
+import { useLocation } from 'react-router-dom';
 
 import Icon from '../atoms/Icon';
 import ImgMusic from '../../assets/music.png';
@@ -24,12 +25,14 @@ const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn }) => {
   const types = [
     { index: 0, name: 'music' },
     { index: 1, name: 'films' },
-    { index: 2, name: 'links' },
-    { index: 3, name: 'notes' },
-    { index: 4, name: 'books' },
-    { index: 5, name: 'games' },
-    { index: 6, name: 'tvseries' }
+    { index: 2, name: 'books' },
+    { index: 3, name: 'games' },
+    { index: 4, name: 'tvseries' },
+    { index: 5, name: 'links' },
+    { index: 6, name: 'notes' }
   ];
+
+  let location = useLocation();
 
   const activeType = e => {
     changeTypeFn(e.index);
@@ -47,8 +50,12 @@ const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn }) => {
       >
         <Icon icon={ImgMusic} activeGroup={activeTypeIndex} />
         <Icon icon={ImgFilm} activeGroup={activeTypeIndex} />
-        <Icon icon={ImgLink} activeGroup={activeTypeIndex} />
-        <Icon icon={ImgNote} activeGroup={activeTypeIndex} />
+        {location.pathname === '/user/' && (
+          <Icon icon={ImgLink} activeGroup={activeTypeIndex} />
+        )}
+        {location.pathname === '/user/' && (
+          <Icon icon={ImgNote} activeGroup={activeTypeIndex} />
+        )}
         <Icon icon={ImgBook} activeGroup={activeTypeIndex} />
         <Icon icon={ImgGame} activeGroup={activeTypeIndex} />
         <Icon icon={ImgTvSeries} activeGroup={activeTypeIndex} />
