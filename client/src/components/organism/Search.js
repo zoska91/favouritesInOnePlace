@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { getListOfTvSeries } from '../../actions/searchResults';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
+import { useQuery } from '@apollo/react-hooks';
 
 import ResultList from '../molecules/ResultList';
+import { FIND_ALL_GAMES_QUERY } from '../../apollo';
 
 const StyledInput = styled(Field)`
   text-align: center;
@@ -16,10 +18,32 @@ const StyledInput = styled(Field)`
   margin-bottom: 2vh;
 `;
 
-const Search = ({ getListOfTvSeries, searchResultsList }) => {
-  const onSubmit = value => {
-    getListOfTvSeries(value);
+const Search = ({ getListOfTvSeries, searchResultsList, activeType }) => {
+  const { loading, error, data, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY, {
+    variables: { name: 'far cry' }
+  });
+  console.log(loading, error, data);
+
+  const onSubmit = (value = 'witcher') => {
+    if (activeType === 'tvseries') getListOfTvSeries(value);
+
+    fetchMore({
+      variables: {
+        name: value.value
+      },
+      updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+        if (!fetchMoreResult) return prev;
+        console.log(fetchMoreResult);
+
+        console.log(rest);
+      }
+    });
   };
+
+  if (loading) return <p>loading</p>;
+  if (error) return <p>ERROR</p>;
+  if (!data) return <p>Not found</p>;
+
   return (
     <>
       <Form
@@ -41,8 +65,9 @@ const Search = ({ getListOfTvSeries, searchResultsList }) => {
   );
 };
 
-const mapStateToProps = ({ searchResults }) => ({
-  searchResultsList: searchResults.list
+const mapStateToProps = ({ searchResults, activeType }) => ({
+  searchResultsList: searchResults.list,
+  activeType: activeType.name
 });
 
 const mapDispatchToProps = dispatch => ({

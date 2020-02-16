@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { FIND_ALL_GAMES_QUERY } from '../apollo';
 
 import Search from '../components/organism/Search';
-import { useQuery } from '@apollo/react-hooks';
 
 const StyledWrapper = styled.main`
   width: 100vw;
@@ -22,8 +20,6 @@ const SyledTitle = styled.h2`
 `;
 
 const Home = ({ activeTypeName }) => {
-  const { loading, error, data } = useQuery(FIND_ALL_GAMES_QUERY);
-  console.log(loading, error, data);
   return (
     <StyledWrapper>
       <SyledTitle>{activeTypeName}</SyledTitle>
