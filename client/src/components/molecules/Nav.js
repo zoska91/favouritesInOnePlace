@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Flicking from '@egjs/react-flicking';
 import { connect } from 'react-redux';
 import { changeActiveType } from '../../actions/activeTyp';
+import { resetList } from '../../actions/searchResults';
 import { setNameType } from '../../actions/activeTyp';
 
 import Icon from '../atoms/Icon';
@@ -20,7 +21,7 @@ const StyledWrapper = styled.ul`
   /* height: 10vh; */
 `;
 
-const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn }) => {
+const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn, resetList }) => {
   const types = [
     { index: 0, name: 'music' },
     { index: 1, name: 'films' },
@@ -32,6 +33,7 @@ const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn }) => {
   ];
 
   const activeType = e => {
+    resetList();
     changeTypeFn(e.index);
     const name = types.filter(el => el.index === e.index);
     setNameTypeFn(name[0].name);
@@ -63,7 +65,8 @@ const mapStateToProps = ({ activeType }) => ({
 
 const mapDispatchToProps = dispatch => ({
   changeTypeFn: type => dispatch(changeActiveType(type)),
-  setNameTypeFn: name => dispatch(setNameType(name))
+  setNameTypeFn: name => dispatch(setNameType(name)),
+  resetList: () => dispatch(resetList())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getOneTvSeries } from '../../actions/searchResults';
 
 import TvSeriesElementList from '../atoms/TvSeriesElementList';
+import GameElementList from '../atoms/GameElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
 
 const StyledWrapper = styled.div`
@@ -18,7 +19,7 @@ const StyledList = styled.ul`
   padding: 0;
 `;
 
-const ResultList = ({ list, getOneTvSeries }) => {
+const ResultList = ({ list, getOneTvSeries, activeType }) => {
   let [activeDetails, toggleDetails] = useState(false);
 
   console.log(list);
@@ -29,17 +30,39 @@ const ResultList = ({ list, getOneTvSeries }) => {
     toggleDetails((activeDetails = true));
   };
 
-  const resultList = list.map(el => (
-    <TvSeriesElementList
-      key={el.show.id}
-      id={el.show.id}
-      title={el.show.name}
-      year={el.show.premiered}
-      img={el.show.image && el.show.image.medium}
-      pickOne={pickOne}
-    />
-  ));
+  let resultList;
 
+  switch (activeType) {
+    case 'tvseries':
+      resultList = list.map(el => (
+        <TvSeriesElementList
+          key={el.show.id}
+          id={el.show.id}
+          title={el.show.name}
+          year={el.show.premiered}
+          img={el.show.image && el.show.image.medium}
+          pickOne={pickOne}
+        />
+      ));
+
+      break;
+
+    case 'games':
+      resultList = list.map(el => (
+        <GameElementList
+          key={el.id}
+          id={el.id}
+          title={el.name}
+          img={el.cover && el.cover[0].url}
+          pickOne={pickOne}
+        />
+      ));
+
+      break;
+
+    default:
+      break;
+  }
   return (
     <StyledWrapper>
       <StyledList>{resultList}</StyledList>
@@ -48,8 +71,12 @@ const ResultList = ({ list, getOneTvSeries }) => {
   );
 };
 
+const mapStateToProps = ({ activeType }) => ({
+  activeType: activeType.name
+});
+
 const mapDispatchToProps = dispatch => ({
   getOneTvSeries: value => dispatch(getOneTvSeries(value))
 });
 
-export default connect(null, mapDispatchToProps)(ResultList);
+export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getListOfTvSeries } from '../../actions/searchResults';
+import { addListResults } from '../../actions/searchResults';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
@@ -18,32 +19,33 @@ const StyledInput = styled(Field)`
   margin-bottom: 2vh;
 `;
 
-const Search = ({ getListOfTvSeries, searchResultsList, activeType }) => {
+const Search = ({
+  getListOfTvSeries,
+  searchResultsList,
+  activeType,
+  addListResults
+}) => {
   const { loading, error, data, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY, {
     variables: { name: 'far cry' }
   });
-  console.log(loading, error, data);
+  // console.log(loading, error, data);
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
 
-    fetchMore({
-      variables: {
-        name: value.value
-      },
-      updateQuery: (prev, { fetchMoreResult, ...rest }) => {
-        if (!fetchMoreResult) return prev;
-        console.log(fetchMoreResult);
-
-        console.log(rest);
-      }
-    });
+    if (activeType === 'games') {
+      fetchMore({
+        variables: {
+          name: value.value
+        },
+        updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+          if (!fetchMoreResult) return prev;
+          console.log(fetchMoreResult);
+          addListResults(fetchMoreResult.findGameByName);
+        }
+      });
+    }
   };
-
-  if (loading) return <p>loading</p>;
-  if (error) return <p>ERROR</p>;
-  if (!data) return <p>Not found</p>;
-
   return (
     <>
       <Form
@@ -60,7 +62,10 @@ const Search = ({ getListOfTvSeries, searchResultsList, activeType }) => {
           </form>
         )}
       />
-      {searchResultsList.length > 0 && <ResultList list={searchResultsList} />}
+      {/* {loading && <p>loading</p>}
+      {error && <p>ERROR</p>}
+      {!data && <p>Not found</p>} */}
+      {searchResultsList && <ResultList list={searchResultsList} />}
     </>
   );
 };
@@ -71,6 +76,7 @@ const mapStateToProps = ({ searchResults, activeType }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getListOfTvSeries: value => dispatch(getListOfTvSeries(value))
+  getListOfTvSeries: value => dispatch(getListOfTvSeries(value)),
+  addListResults: value => dispatch(addListResults(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
