@@ -15,8 +15,9 @@ const StyledWrapper = styled.main`
 const SyledTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
+  font-size: 1rem;
   padding: 2vh;
-  margin-bottom: 2vh;
+  margin: 0;
 `;
 
 const Home = ({ activeTypeName }) => {

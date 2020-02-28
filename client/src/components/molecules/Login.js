@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Form, Field } from 'react-final-form';
+import { LOGIN_USER } from '../../apollo/auth';
+import { useMutation } from '@apollo/react-hooks';
 
 const StyledForm = styled.form`
   display: flex;
@@ -41,7 +42,7 @@ const StyledLabel = styled.div`
   min-width: 35%;
 `;
 
-const StyledInput = styled(Field)`
+const StyledInput = styled.input`
   display: block;
   text-align: center;
   border: none;
@@ -68,46 +69,73 @@ const StyledTitle = styled.h2`
   transform: translateY(-50%);
 `;
 
+const StyledError = styled.p`
+  color: ${({ theme }) => theme.error};
+  padding: 0;
+  margin: 0;
+`;
+
 const Login = ({ setTypeOfUserPanel }) => {
-  const onSubmit = values => {
-    console.log(values);
+  let email;
+  let password;
+  let errors;
+
+  const setToken = data => {
+    localStorage.setItem('token', data.loginUser.token);
   };
 
+  const setError = data => {
+    errors = data.message;
+  };
+
+  const [loginUser, { error }] = useMutation(LOGIN_USER, {
+    onCompleted: setToken,
+    onError: setError
+  });
   return (
-    <Form
-      onSubmit={onSubmit}
-      initialValues={{ login: '', password: '' }}
-      render={({ handleSubmit }) => (
-        <StyledForm onSubmit={handleSubmit}>
-          <StyledTitle>Log in</StyledTitle>
-          <StyledFormElement>
-            <StyledLabel>login</StyledLabel>
-            <StyledInput
-              name='login'
-              component='input'
-              type='text'
-              placeholder='login'
-            />
-          </StyledFormElement>
-          <StyledFormElement>
-            <StyledLabel>password</StyledLabel>
-            <StyledInput
-              name='password'
-              component='input'
-              type='password'
-              placeholder='password'
-            />
-          </StyledFormElement>
-          <StyledSubmit type='submit'>log in</StyledSubmit>
-          <StyledButton
-            type='button'
-            onClick={() => setTypeOfUserPanel('signup')}
-          >
-            create account
-          </StyledButton>
-        </StyledForm>
-      )}
-    />
+    <StyledForm
+      onSubmit={e => {
+        e.preventDefault();
+
+        loginUser({
+          variables: { email: email.value, password: password.value }
+        });
+
+        email.value = '';
+        password.value = '';
+      }}
+    >
+      <StyledTitle>Log in</StyledTitle>
+      <StyledFormElement>
+        <StyledLabel>login</StyledLabel>
+        <StyledInput
+          name='login'
+          component='input'
+          type='text'
+          placeholder='login'
+          ref={node => {
+            email = node;
+          }}
+        />
+      </StyledFormElement>
+      <StyledFormElement>
+        <StyledLabel>password</StyledLabel>
+        <StyledInput
+          name='password'
+          component='input'
+          type='password'
+          placeholder='password'
+          ref={node => {
+            password = node;
+          }}
+        />
+      </StyledFormElement>
+      {error && <StyledError>{error.message.substring(15)}</StyledError>}
+      <StyledSubmit type='submit'>log in</StyledSubmit>
+      <StyledButton type='button' onClick={() => setTypeOfUserPanel('signup')}>
+        create account
+      </StyledButton>
+    </StyledForm>
   );
 };
 

@@ -9,7 +9,8 @@ export const theme = {
   submitButton: '#3F5A75',
   closeButton: '#750000',
   titleBg: '#CFE2F5',
-  listElementBg: '#CFE2F5'
+  listElementBg: '#CFE2F5',
+  error: '#750000'
 };
 
 //636C75 - szary
