@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { LOGIN_USER } from '../../apollo/auth';
 import { useMutation } from '@apollo/react-hooks';
+import { connect } from 'react-redux';
+
+import { setUser } from '../../actions/user';
 
 const StyledForm = styled.form`
   display: flex;
@@ -75,17 +78,17 @@ const StyledError = styled.p`
   margin: 0;
 `;
 
-const Login = ({ setTypeOfUserPanel }) => {
+const Login = ({ setTypeOfUserPanel, setUserFn }) => {
   let email;
   let password;
-  let errors;
 
   const setToken = data => {
     localStorage.setItem('token', data.loginUser.token);
+    setUserFn(data.loginUser.user);
   };
 
-  const setError = data => {
-    errors = data.message;
+  const setError = err => {
+    console.log(err);
   };
 
   const [loginUser, { error }] = useMutation(LOGIN_USER, {
@@ -100,9 +103,6 @@ const Login = ({ setTypeOfUserPanel }) => {
         loginUser({
           variables: { email: email.value, password: password.value }
         });
-
-        email.value = '';
-        password.value = '';
       }}
     >
       <StyledTitle>Log in</StyledTitle>
@@ -139,4 +139,8 @@ const Login = ({ setTypeOfUserPanel }) => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+  setUserFn: type => dispatch(setUser(type))
+});
+
+export default connect(null, mapDispatchToProps)(Login);

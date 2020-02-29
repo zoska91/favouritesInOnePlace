@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import HomeIcon from '../../assets/home.png';
 import UserIcon from '../../assets/human.png';
@@ -8,6 +9,7 @@ import SearchIcon from '../../assets/search.png';
 import Login from '../molecules/Login';
 import SignUp from '../molecules/SignUp';
 import UserPanel from '../molecules/UserPanel';
+import userReducer from '../../reducers/user';
 
 const StyledWrapper = styled.div`
   width: 90vw;
@@ -91,7 +93,7 @@ const StyledIcon = styled.li`
   }
 `;
 
-const SideBar = () => {
+const SideBar = ({ isUserLogin }) => {
   let [isOpen, toggleSidebar] = useState(false);
   let [typeOfUserPanel, toggleUserPanel] = useState('login');
 
@@ -104,12 +106,12 @@ const SideBar = () => {
       {isOpen && (
         <StyledUserPanel>
           <StyledCloseButton onClick={() => toggleSidebar((isOpen = false))} />
-          {typeOfUserPanel === 'login' ? (
-            <Login setTypeOfUserPanel={setTypeOfUserPanel} />
-          ) : typeOfUserPanel === 'signup' ? (
-            <SignUp setTypeOfUserPanel={setTypeOfUserPanel} />
-          ) : (
+          {isUserLogin ? (
             <UserPanel />
+          ) : typeOfUserPanel === 'login' ? (
+            <Login setTypeOfUserPanel={setTypeOfUserPanel} />
+          ) : (
+            <SignUp setTypeOfUserPanel={setTypeOfUserPanel} />
           )}
         </StyledUserPanel>
       )}
@@ -140,4 +142,11 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+const mapStateToProps = ({ user }) => ({
+  isUserLogin: user.user
+});
+
+export default connect(mapStateToProps, null)(SideBar);
+
+//TODO when list is visible - login on top
+//TODO when we want to add sth and we're not login sidebar will show on top

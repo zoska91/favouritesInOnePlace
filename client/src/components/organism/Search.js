@@ -28,7 +28,6 @@ const Search = ({
   const { loading, error, data, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY, {
     variables: { name: 'far cry' }
   });
-  // console.log(loading, error, data);
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
@@ -62,9 +61,7 @@ const Search = ({
           </form>
         )}
       />
-      {/* {loading && <p>loading</p>}
-      {error && <p>ERROR</p>}
-      {!data && <p>Not found</p>} */}
+
       {searchResultsList && <ResultList list={searchResultsList} />}
     </>
   );
