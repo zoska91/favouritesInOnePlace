@@ -9,11 +9,14 @@ import SearchIcon from '../../assets/search.png';
 import Login from '../molecules/Login';
 import SignUp from '../molecules/SignUp';
 import UserPanel from '../molecules/UserPanel';
-import userReducer from '../../reducers/user';
 
 const StyledWrapper = styled.div`
+  position: fixed;
+  z-index: 99999;
+  bottom: 2vh;
+  left: 5vw;
   width: 90vw;
-  height: ${({ isOpen }) => (!isOpen ? '12vh' : '60vh')};
+  height: ${({ isOpen }) => (!isOpen ? '12vh' : '82vh')};
   margin: 0 auto;
   background-color: ${({ theme }) => theme.secondary};
   border-radius: 10px;
@@ -32,7 +35,7 @@ const StyledUserPanel = styled.div`
 
 const StyledCloseButton = styled.span`
   position: absolute;
-  top: 0;
+  top: 1vh;
   right: 0;
 
   display: block;
