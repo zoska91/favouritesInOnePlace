@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { LOGIN_USER } from '../../apollo/auth';
 import { useMutation } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
 
 import { setUser } from '../../actions/user';
+import { LOGIN_USER } from '../../apollo/auth';
 
 import Submit from '../atoms/Submit';
 import Button from '../atoms/Button';
@@ -44,15 +44,16 @@ const Login = ({ setTypeOfUserPanel, setUserFn }) => {
     onCompleted: setToken,
     onError: setError
   });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    loginUser({
+      variables: { email, password }
+    });
+  };
+
   return (
-    <StyledForm
-      onSubmit={e => {
-        e.preventDefault();
-        loginUser({
-          variables: { email: email, password: password }
-        });
-      }}
-    >
+    <StyledForm onSubmit={e => onSubmit(e)}>
       <StyledTitle>Log in</StyledTitle>
 
       <FormElement

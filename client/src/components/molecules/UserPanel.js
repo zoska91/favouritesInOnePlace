@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { useMutation } from '@apollo/react-hooks';
+
+import { UPDATE_USER } from '../../apollo/user';
 
 import ImgLogout from '../../assets/exit.png';
-
 import FormElement from '../atoms/FormElement';
 import Submit from '../atoms/Submit';
 import Title from '../atoms/Title';
+import Error from '../atoms/Error';
+import Modal from '../atoms/Modal';
 
 const SyledWraper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  border-bottom: 1px solid black;
 `;
 
 const StyledForm = styled.form`
@@ -41,24 +46,60 @@ const StyledLogout = styled.button`
   }
 `;
 
-const UserPanel = ({ user }) => {
+const UserPanel = ({ user, toggleSidebar }) => {
   console.log(user);
+
+  const setError = err => {
+    console.log(err);
+    if (errors) errors = error.message.substring(15);
+  };
+
+  const updateSuccefull = () => {
+    setSuccefull(true);
+  };
+
+  const [isSuccefull, setSuccefull] = useState(false);
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
-  const [ConfirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState('');
+
+  const [updateUser, { error }] = useMutation(UPDATE_USER, {
+    onError: setError
+  });
 
   const logOut = () => {
     localStorage.removeItem('token');
     window.location.href = '/home';
   };
 
+  const onSubmit = e => {
+    e.preventDefault();
+
+    console.log(firstName, lastName, email, password, confirmPassword);
+
+    if (password !== confirmPassword) {
+      setErrors('Password must be the same');
+      console.log(errors);
+      return;
+    } else {
+      updateUser({
+        variables: { id: user.id, firstName, lastName, email, password }
+      });
+      setSuccefull(true);
+    }
+  };
+
   return (
     <SyledWraper>
+      {isSuccefull && (
+        <Modal text='Update succefull' toggleSidebar={toggleSidebar} />
+      )}
       <Title>Hello {user.firstName}</Title>
       <p>Do you want change something?</p>
-      <StyledForm action=''>
+      <StyledForm onSubmit={e => onSubmit(e)}>
         <FormElement
           value={firstName}
           name='firstName'
@@ -101,7 +142,7 @@ const UserPanel = ({ user }) => {
           setValue={setConfirmPassword}
           small
         ></FormElement>
-
+        {errors && <Error>{errors}</Error>}
         <Submit>Confirm</Submit>
       </StyledForm>
 

@@ -100,6 +100,10 @@ const SideBar = ({ isUserLogin }) => {
   let [isOpen, toggleSidebar] = useState(false);
   let [typeOfUserPanel, toggleUserPanel] = useState('login');
 
+  const toggleSidebarFn = value => {
+    toggleSidebar(value);
+  };
+
   const setTypeOfUserPanel = value => {
     toggleUserPanel((typeOfUserPanel = value));
   };
@@ -110,7 +114,7 @@ const SideBar = ({ isUserLogin }) => {
         <StyledUserPanel>
           <StyledCloseButton onClick={() => toggleSidebar((isOpen = false))} />
           {isUserLogin ? (
-            <UserPanel />
+            <UserPanel toggleSidebar={value => toggleSidebar(value)} />
           ) : typeOfUserPanel === 'login' ? (
             <Login setTypeOfUserPanel={setTypeOfUserPanel} />
           ) : (
