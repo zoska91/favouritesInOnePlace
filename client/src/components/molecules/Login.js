@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { LOGIN_USER } from '../../apollo/auth';
 import { useMutation } from '@apollo/react-hooks';
+import { connect } from 'react-redux';
+
+import { setUser } from '../../actions/user';
+import { LOGIN_USER } from '../../apollo/auth';
+
+import Submit from '../atoms/Submit';
+import Button from '../atoms/Button';
+import Error from '../atoms/Error';
+import FormElement from '../atoms/FormElement';
 
 const StyledForm = styled.form`
   display: flex;
@@ -11,132 +19,67 @@ const StyledForm = styled.form`
   justify-content: space-evenly;
 `;
 
-const StyledSubmit = styled.button`
-  background-color: ${({ theme }) => theme.submitButton};
-  padding: 1.5vh 20vw;
-  border: none;
-  border-radius: 5px;
-  box-shadow: inset 3px 3px 5px 3px ${({ theme }) => theme.primary};
-  display: flex;
-  letter-spacing: 1px;
-  align-items: center;
-  color: ${({ theme }) => theme.secondary};
-  font-weight: bold;
-  font-size: 1rem;
-`;
-
-const StyledFormElement = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
-const StyledLabel = styled.div`
-  background-color: ${({ theme }) => theme.secondary};
-  position: absolute;
-  top: -25%;
-  text-align: center;
-  left: 30%;
-  font-size: 0.8rem;
-  border-radius: 5px;
-  min-width: 35%;
-`;
-
-const StyledInput = styled.input`
-  display: block;
-  text-align: center;
-  border: none;
-  background-color: transparent;
-  box-shadow: inset 3px 3px 10px 6px ${({ theme }) => theme.shadow};
-  padding: 2vh 3vw;
-  border-radius: 5px;
-  width: 70vw;
-`;
-
-const StyledButton = styled.button`
-  border: none;
-  border-bottom: 1px solid ${({ theme }) => theme.primary};
-  background-color: transparent;
-  padding: 0.2vh 5vw;
-  border-radius: 5px;
-`;
-
 const StyledTitle = styled.h2`
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   transform: translateY(-50%);
 `;
 
-const StyledError = styled.p`
-  color: ${({ theme }) => theme.error};
-  padding: 0;
-  margin: 0;
-`;
-
-const Login = ({ setTypeOfUserPanel }) => {
-  let email;
-  let password;
-  let errors;
+const Login = ({ setTypeOfUserPanel, setUserFn }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const setToken = data => {
     localStorage.setItem('token', data.loginUser.token);
+    setUserFn(data.loginUser.user);
   };
 
-  const setError = data => {
-    errors = data.message;
+  const setError = err => {
+    console.log(err);
   };
 
   const [loginUser, { error }] = useMutation(LOGIN_USER, {
     onCompleted: setToken,
     onError: setError
   });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    loginUser({
+      variables: { email, password }
+    });
+  };
+
   return (
-    <StyledForm
-      onSubmit={e => {
-        e.preventDefault();
-
-        loginUser({
-          variables: { email: email.value, password: password.value }
-        });
-
-        email.value = '';
-        password.value = '';
-      }}
-    >
+    <StyledForm onSubmit={e => onSubmit(e)}>
       <StyledTitle>Log in</StyledTitle>
-      <StyledFormElement>
-        <StyledLabel>login</StyledLabel>
-        <StyledInput
-          name='login'
-          component='input'
-          type='text'
-          placeholder='login'
-          ref={node => {
-            email = node;
-          }}
-        />
-      </StyledFormElement>
-      <StyledFormElement>
-        <StyledLabel>password</StyledLabel>
-        <StyledInput
-          name='password'
-          component='input'
-          type='password'
-          placeholder='password'
-          ref={node => {
-            password = node;
-          }}
-        />
-      </StyledFormElement>
-      {error && <StyledError>{error.message.substring(15)}</StyledError>}
-      <StyledSubmit type='submit'>log in</StyledSubmit>
-      <StyledButton type='button' onClick={() => setTypeOfUserPanel('signup')}>
+
+      <FormElement
+        name='email'
+        type='text'
+        placeholder='email'
+        setValue={setEmail}
+      ></FormElement>
+      <FormElement
+        name='password'
+        type='password'
+        placeholder='password'
+        setValue={setPassword}
+      ></FormElement>
+
+      {error && <Error>{error.message.substring(15)}</Error>}
+      <Submit type='submit'>log in</Submit>
+      <Button type='button' onClick={() => setTypeOfUserPanel('signup')}>
         create account
-      </StyledButton>
+      </Button>
     </StyledForm>
   );
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+  setUserFn: type => dispatch(setUser(type))
+});
+
+export default connect(null, mapDispatchToProps)(Login);

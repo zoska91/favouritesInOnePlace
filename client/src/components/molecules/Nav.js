@@ -21,15 +21,21 @@ const StyledWrapper = styled.ul`
   /* height: 10vh; */
 `;
 
-const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn, resetList }) => {
+const Nav = ({
+  activeTypeIndex,
+  changeTypeFn,
+  setNameTypeFn,
+  resetList,
+  isUserLogin
+}) => {
   const types = [
     { index: 0, name: 'music' },
     { index: 1, name: 'films' },
-    { index: 2, name: 'links' },
-    { index: 3, name: 'notes' },
-    { index: 4, name: 'books' },
-    { index: 5, name: 'games' },
-    { index: 6, name: 'tvseries' }
+    { index: 2, name: 'books' },
+    { index: 3, name: 'games' },
+    { index: 4, name: 'tvseries' },
+    { index: 5, name: 'links' },
+    { index: 6, name: 'notes' }
   ];
 
   const activeType = e => {
@@ -44,23 +50,24 @@ const Nav = ({ activeTypeIndex, changeTypeFn, setNameTypeFn, resetList }) => {
       <Flicking
         className='flicking flicking0'
         gap={10}
-        defaultIndex={3}
+        defaultIndex={2}
         onSelect={e => activeType(e)}
       >
         <Icon icon={ImgMusic} activeGroup={activeTypeIndex} />
         <Icon icon={ImgFilm} activeGroup={activeTypeIndex} />
-        <Icon icon={ImgLink} activeGroup={activeTypeIndex} />
-        <Icon icon={ImgNote} activeGroup={activeTypeIndex} />
         <Icon icon={ImgBook} activeGroup={activeTypeIndex} />
         <Icon icon={ImgGame} activeGroup={activeTypeIndex} />
         <Icon icon={ImgTvSeries} activeGroup={activeTypeIndex} />
+        {isUserLogin && <Icon icon={ImgLink} activeGroup={activeTypeIndex} />}
+        {isUserLogin && <Icon icon={ImgNote} activeGroup={activeTypeIndex} />}
       </Flicking>
     </StyledWrapper>
   );
 };
 
-const mapStateToProps = ({ activeType }) => ({
-  activeTypeIndex: activeType.index
+const mapStateToProps = ({ activeType, user }) => ({
+  activeTypeIndex: activeType.index,
+  isUserLogin: user.user
 });
 
 const mapDispatchToProps = dispatch => ({

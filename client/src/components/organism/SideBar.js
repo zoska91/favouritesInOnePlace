@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import HomeIcon from '../../assets/home.png';
 import UserIcon from '../../assets/human.png';
@@ -10,8 +11,12 @@ import SignUp from '../molecules/SignUp';
 import UserPanel from '../molecules/UserPanel';
 
 const StyledWrapper = styled.div`
+  position: fixed;
+  z-index: 2;
+  bottom: 2vh;
+  left: 5vw;
   width: 90vw;
-  height: ${({ isOpen }) => (!isOpen ? '12vh' : '60vh')};
+  height: ${({ isOpen }) => (!isOpen ? '12vh' : '82vh')};
   margin: 0 auto;
   background-color: ${({ theme }) => theme.secondary};
   border-radius: 10px;
@@ -30,7 +35,7 @@ const StyledUserPanel = styled.div`
 
 const StyledCloseButton = styled.span`
   position: absolute;
-  top: 0;
+  top: 1vh;
   right: 0;
 
   display: block;
@@ -91,7 +96,7 @@ const StyledIcon = styled.li`
   }
 `;
 
-const SideBar = () => {
+const SideBar = ({ isUserLogin }) => {
   let [isOpen, toggleSidebar] = useState(false);
   let [typeOfUserPanel, toggleUserPanel] = useState('login');
 
@@ -104,12 +109,12 @@ const SideBar = () => {
       {isOpen && (
         <StyledUserPanel>
           <StyledCloseButton onClick={() => toggleSidebar((isOpen = false))} />
-          {typeOfUserPanel === 'login' ? (
+          {isUserLogin ? (
+            <UserPanel toggleSidebar={value => toggleSidebar(value)} />
+          ) : typeOfUserPanel === 'login' ? (
             <Login setTypeOfUserPanel={setTypeOfUserPanel} />
-          ) : typeOfUserPanel === 'signup' ? (
-            <SignUp setTypeOfUserPanel={setTypeOfUserPanel} />
           ) : (
-            <UserPanel />
+            <SignUp setTypeOfUserPanel={setTypeOfUserPanel} />
           )}
         </StyledUserPanel>
       )}
@@ -140,4 +145,11 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+const mapStateToProps = ({ user }) => ({
+  isUserLogin: user.user
+});
+
+export default connect(mapStateToProps, null)(SideBar);
+
+//TODO when list is visible - login on top
+//TODO when we want to add sth and we're not login sidebar will show on top

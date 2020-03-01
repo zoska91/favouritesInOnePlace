@@ -9,7 +9,7 @@ import DetailsOfOne from '../molecules/DetailsOfOne';
 
 const StyledWrapper = styled.div`
   flex-grow: 1;
-  max-height: 35vh;
+  max-height: 40vh;
   overflow-y: scroll;
   padding: 0 3vw;
 `;

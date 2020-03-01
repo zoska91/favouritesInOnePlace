@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import Search from '../components/organism/Search';
+import Title from '../components/atoms/Title';
 
 const StyledWrapper = styled.main`
   width: 100vw;
@@ -12,18 +13,10 @@ const StyledWrapper = styled.main`
   flex-direction: column;
 `;
 
-const SyledTitle = styled.h2`
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 1rem;
-  padding: 2vh;
-  margin: 0;
-`;
-
 const Home = ({ activeTypeName }) => {
   return (
     <StyledWrapper>
-      <SyledTitle>{activeTypeName}</SyledTitle>
+      <Title>{activeTypeName}</Title>
       <Search />
     </StyledWrapper>
   );

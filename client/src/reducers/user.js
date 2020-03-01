@@ -1,7 +1,7 @@
 import { SET_USER } from '../actions/user';
 
 const INITIAL_STATE = {
-  token: ''
+  user: ''
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -9,7 +9,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case SET_USER:
       return {
         ...state,
-        token: action.item
+        user: action.item
       };
 
     default:
