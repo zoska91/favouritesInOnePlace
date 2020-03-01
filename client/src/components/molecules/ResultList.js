@@ -26,7 +26,7 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
 
   const pickOne = id => {
     console.log(id);
-    getOneTvSeries(id);
+    if (activeType === 'tvseries') getOneTvSeries(id);
     toggleDetails((activeDetails = true));
   };
 

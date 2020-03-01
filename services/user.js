@@ -16,6 +16,12 @@ export const registerUser = async (
   passwordPlane
 ) => {
   const password = await bcrypt.hash(passwordPlane, 10);
+
+  const user = await models.User.findOne({ where: { email } });
+  if (user) {
+    throw new Error('We allready have this email');
+  }
+
   return models.User.create({ firstName, lastName, email, password });
 };
 

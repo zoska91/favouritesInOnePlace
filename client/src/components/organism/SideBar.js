@@ -12,7 +12,7 @@ import UserPanel from '../molecules/UserPanel';
 
 const StyledWrapper = styled.div`
   position: fixed;
-  z-index: 2;
+  z-index: 10000;
   bottom: 2vh;
   left: 5vw;
   width: 90vw;
