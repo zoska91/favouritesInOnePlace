@@ -47,15 +47,8 @@ const StyledLogout = styled.button`
 `;
 
 const UserPanel = ({ user, toggleSidebar }) => {
-  console.log(user);
-
   const setError = err => {
     console.log(err);
-    if (errors) errors = error.message.substring(15);
-  };
-
-  const updateSuccefull = () => {
-    setSuccefull(true);
   };
 
   const [isSuccefull, setSuccefull] = useState(false);
@@ -66,7 +59,7 @@ const UserPanel = ({ user, toggleSidebar }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState('');
 
-  const [updateUser, { error }] = useMutation(UPDATE_USER, {
+  const [updateUser] = useMutation(UPDATE_USER, {
     onError: setError
   });
 

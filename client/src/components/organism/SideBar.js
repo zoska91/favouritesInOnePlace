@@ -12,7 +12,7 @@ import UserPanel from '../molecules/UserPanel';
 
 const StyledWrapper = styled.div`
   position: fixed;
-  z-index: 99999;
+  z-index: 2;
   bottom: 2vh;
   left: 5vw;
   width: 90vw;
@@ -99,10 +99,6 @@ const StyledIcon = styled.li`
 const SideBar = ({ isUserLogin }) => {
   let [isOpen, toggleSidebar] = useState(false);
   let [typeOfUserPanel, toggleUserPanel] = useState('login');
-
-  const toggleSidebarFn = value => {
-    toggleSidebar(value);
-  };
 
   const setTypeOfUserPanel = value => {
     toggleUserPanel((typeOfUserPanel = value));

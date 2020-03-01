@@ -25,9 +25,7 @@ const Search = ({
   activeType,
   addListResults
 }) => {
-  const { loading, error, data, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY, {
-    variables: { name: 'far cry' }
-  });
+  const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
@@ -61,7 +59,7 @@ const Search = ({
           </form>
         )}
       />
-
+      {loading && <p>one moment, please :)</p>}
       {searchResultsList && <ResultList list={searchResultsList} />}
     </>
   );

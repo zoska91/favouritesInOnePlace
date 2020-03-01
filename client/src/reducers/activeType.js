@@ -2,7 +2,7 @@ import { CHANGE_ACTIVE_TYPE } from '../actions/activeTyp';
 import { SET_NAME_TYPE } from '../actions/activeTyp';
 
 const INITIAL_STATE = {
-  name: 'notes',
+  name: 'games',
   index: 3
 };
 

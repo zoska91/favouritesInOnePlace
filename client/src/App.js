@@ -12,7 +12,7 @@ import Header from './components/organism/Header';
 import { GET_USER_INFO } from './apollo/user';
 
 const App = ({ setUserFn }) => {
-  const { loading, error, data } = useQuery(GET_USER_INFO);
+  const { data } = useQuery(GET_USER_INFO);
 
   if (data) setUserFn(data.me);
 

@@ -32,8 +32,13 @@ const SignUp = ({ setTypeOfUserPanel }) => {
     setTypeOfUserPanel('login');
   };
 
+  const setError = err => {
+    console.log(err);
+  };
+
   const [singup, { error }] = useMutation(SIGNUP_USER, {
-    onCompleted: toLogin
+    onCompleted: toLogin,
+    onError: setError
   });
 
   return (
@@ -70,3 +75,5 @@ const SignUp = ({ setTypeOfUserPanel }) => {
 };
 
 export default SignUp;
+
+//TODO validation when emil is in db
