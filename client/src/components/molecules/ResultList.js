@@ -6,6 +6,7 @@ import { getOneTvSeries } from '../../actions/searchResults';
 import TvSeriesElementList from '../atoms/TvSeriesElementList';
 import GameElementList from '../atoms/GameElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
+import BookElementList from '../atoms/BookElementList';
 
 const StyledWrapper = styled.div`
   flex-grow: 1;
@@ -27,11 +28,11 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
   const pickOne = id => {
     console.log(id);
     if (activeType === 'tvseries') getOneTvSeries(id);
+
     toggleDetails((activeDetails = true));
   };
 
   let resultList;
-
   switch (activeType) {
     case 'tvseries':
       resultList = list.map(el => (
@@ -60,6 +61,16 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
 
       break;
 
+    // case 'books':
+    //   resultList = list.map(el => (
+    //     <BookElementList
+    //       key={el.id}
+    //       id={el.id}
+    //       title={el.name}
+    //       img={el.cover && el.cover[0].url}
+    //       pickOne={pickOne}
+    //     />
+    //   ));
     default:
       break;
   }
