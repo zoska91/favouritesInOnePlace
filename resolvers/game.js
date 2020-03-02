@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { apiKeys } from '../config/api-keys';
 
 export default {
   Query: {
@@ -8,7 +9,7 @@ export default {
         method: 'POST',
         headers: {
           Accept: 'application/json',
-          'user-key': '8c2d330977e65e76841713ebe6fa7751',
+          'user-key': apiKeys.games,
           api_header: {
             header: 'Access-Control-Allow-Origin',
             value: '*'
@@ -26,7 +27,7 @@ export default {
             method: 'POST',
             headers: {
               Accept: 'application/json',
-              'user-key': '8c2d330977e65e76841713ebe6fa7751',
+              'user-key': apiKeys.games,
               api_header: {
                 header: 'Access-Contro,l-Allow-Origin',
                 value: '*'

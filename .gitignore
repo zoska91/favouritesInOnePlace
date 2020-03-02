@@ -26,5 +26,6 @@ yarn-error.log*
 
 # back-end
 config/database.json
+config/api-keys.json
 
 

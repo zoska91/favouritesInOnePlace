@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { getOneTvSeries } from '../../actions/searchResults';
+import { getOneBook } from '../../actions/searchResults';
+import { getOneMovie } from '../../actions/searchResults';
 
 import ElementList from '../atoms/ElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
@@ -18,14 +20,22 @@ const StyledList = styled.ul`
   padding: 0;
 `;
 
-const ResultList = ({ list, getOneTvSeries, activeType }) => {
+const ResultList = ({
+  list,
+  getOneTvSeries,
+  activeType,
+  getOneBook,
+  getOneMovie
+}) => {
   let [activeDetails, toggleDetails] = useState(false);
 
   console.log(list);
 
   const pickOne = id => {
-    console.log(id);
+    console.log(id, activeType);
     if (activeType === 'tvseries') getOneTvSeries(id);
+    if (activeType === 'books') getOneBook(id);
+    if (activeType === 'films') getOneMovie(id);
 
     toggleDetails((activeDetails = true));
   };
@@ -74,6 +84,20 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
         ));
       }
 
+    case 'films':
+      resultList = list.map(el => (
+        <ElementList
+          key={el.id}
+          id={el.id}
+          title={el.title}
+          img={
+            el.poster_path &&
+            `https://image.tmdb.org/t/p/w500/${el.poster_path}`
+          }
+          pickOne={pickOne}
+        />
+      ));
+
       break;
 
     default:
@@ -92,7 +116,9 @@ const mapStateToProps = ({ activeType }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getOneTvSeries: value => dispatch(getOneTvSeries(value))
+  getOneTvSeries: value => dispatch(getOneTvSeries(value)),
+  getOneBook: value => dispatch(getOneTvSeries(value)),
+  getOneMovie: value => dispatch(getOneMovie(value))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

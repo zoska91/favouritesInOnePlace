@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { getListOfTvSeries } from '../../actions/searchResults';
 import { getListOfBooks } from '../../actions/searchResults';
 import { addListResults } from '../../actions/searchResults';
+import { getListOfMovies } from '../../actions/searchResults';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
@@ -25,7 +26,8 @@ const Search = ({
   searchResultsList,
   activeType,
   addListResults,
-  getListOfBooks
+  getListOfBooks,
+  getListOfMovies
 }) => {
   const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
 
@@ -35,6 +37,11 @@ const Search = ({
     if (activeType === 'books') {
       getListOfBooks(value);
     }
+
+    if (activeType === 'films') {
+      getListOfMovies(value);
+    }
+
     if (activeType === 'games') {
       fetchMore({
         variables: {
@@ -78,6 +85,7 @@ const mapStateToProps = ({ searchResults, activeType }) => ({
 const mapDispatchToProps = dispatch => ({
   getListOfTvSeries: value => dispatch(getListOfTvSeries(value)),
   getListOfBooks: value => dispatch(getListOfBooks(value)),
+  getListOfMovies: value => dispatch(getListOfMovies(value)),
   addListResults: value => dispatch(addListResults(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
