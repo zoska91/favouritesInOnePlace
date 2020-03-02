@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { getOneTvSeries } from '../../actions/searchResults';
 
-import TvSeriesElementList from '../atoms/TvSeriesElementList';
-import GameElementList from '../atoms/GameElementList';
+import ElementList from '../atoms/ElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
-import BookElementList from '../atoms/BookElementList';
 
 const StyledWrapper = styled.div`
   flex-grow: 1;
@@ -36,11 +34,10 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
   switch (activeType) {
     case 'tvseries':
       resultList = list.map(el => (
-        <TvSeriesElementList
+        <ElementList
           key={el.show.id}
           id={el.show.id}
           title={el.show.name}
-          year={el.show.premiered}
           img={el.show.image && el.show.image.medium}
           pickOne={pickOne}
         />
@@ -50,7 +47,7 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
 
     case 'games':
       resultList = list.map(el => (
-        <GameElementList
+        <ElementList
           key={el.id}
           id={el.id}
           title={el.name}
@@ -61,16 +58,24 @@ const ResultList = ({ list, getOneTvSeries, activeType }) => {
 
       break;
 
-    // case 'books':
-    //   resultList = list.map(el => (
-    //     <BookElementList
-    //       key={el.id}
-    //       id={el.id}
-    //       title={el.name}
-    //       img={el.cover && el.cover[0].url}
-    //       pickOne={pickOne}
-    //     />
-    //   ));
+    case 'books':
+      if (list.items) {
+        resultList = list.items.map(el => (
+          <ElementList
+            key={el.id}
+            id={el.id}
+            title={el.volumeInfo.title}
+            img={
+              el.volumeInfo.imageLinks &&
+              el.volumeInfo.imageLinks.smallThumbnail
+            }
+            pickOne={pickOne}
+          />
+        ));
+      }
+
+      break;
+
     default:
       break;
   }
