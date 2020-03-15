@@ -23,6 +23,7 @@
     "graphql": "^14.6.0",
     "graphql-resolvers": "^0.4.2",
     "graphql-tools": "^4.0.6",
+    "gsap": "^3.2.4",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "node-fetch": "^2.6.0",

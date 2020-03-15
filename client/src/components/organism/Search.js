@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getListOfTvSeries } from '../../actions/searchResults';
 import { getListOfBooks } from '../../actions/searchResults';
+import { getListOfMusics } from '../../actions/searchResults';
 import { addListResults } from '../../actions/searchResults';
 import { getListOfMovies } from '../../actions/searchResults';
 import { Form, Field } from 'react-final-form';
@@ -27,7 +28,8 @@ const Search = ({
   activeType,
   addListResults,
   getListOfBooks,
-  getListOfMovies
+  getListOfMovies,
+  getListOfMusics
 }) => {
   const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
 
@@ -40,6 +42,10 @@ const Search = ({
 
     if (activeType === 'films') {
       getListOfMovies(value);
+    }
+
+    if (activeType === 'music') {
+      getListOfMusics(value);
     }
 
     if (activeType === 'games') {
@@ -62,12 +68,7 @@ const Search = ({
         initialValues={{ value: '' }}
         render={({ handleSubmit, reset }) => (
           <form onSubmit={handleSubmit}>
-            <StyledInput
-              name='value'
-              component='input'
-              type='text'
-              placeholder='search'
-            />
+            <StyledInput name='value' component='input' type='text' placeholder='search' />
           </form>
         )}
       />
@@ -86,6 +87,7 @@ const mapDispatchToProps = dispatch => ({
   getListOfTvSeries: value => dispatch(getListOfTvSeries(value)),
   getListOfBooks: value => dispatch(getListOfBooks(value)),
   getListOfMovies: value => dispatch(getListOfMovies(value)),
+  getListOfMusics: value => dispatch(getListOfMusics(value)),
   addListResults: value => dispatch(addListResults(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -20,13 +20,7 @@ const StyledList = styled.ul`
   padding: 0;
 `;
 
-const ResultList = ({
-  list,
-  getOneTvSeries,
-  activeType,
-  getOneBook,
-  getOneMovie
-}) => {
+const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie }) => {
   let [activeDetails, toggleDetails] = useState(false);
 
   console.log(list);
@@ -57,13 +51,7 @@ const ResultList = ({
 
     case 'games':
       resultList = list.map(el => (
-        <ElementList
-          key={el.id}
-          id={el.id}
-          title={el.name}
-          img={el.cover && el.cover[0].url}
-          pickOne={pickOne}
-        />
+        <ElementList key={el.id} id={el.id} title={el.name} img={el.cover && el.cover[0].url} pickOne={pickOne} />
       ));
 
       break;
@@ -75,14 +63,13 @@ const ResultList = ({
             key={el.id}
             id={el.id}
             title={el.volumeInfo.title}
-            img={
-              el.volumeInfo.imageLinks &&
-              el.volumeInfo.imageLinks.smallThumbnail
-            }
+            img={el.volumeInfo.imageLinks && el.volumeInfo.imageLinks.smallThumbnail}
             pickOne={pickOne}
           />
         ));
       }
+
+      break;
 
     case 'films':
       resultList = list.map(el => (
@@ -90,10 +77,20 @@ const ResultList = ({
           key={el.id}
           id={el.id}
           title={el.title}
-          img={
-            el.poster_path &&
-            `https://image.tmdb.org/t/p/w500/${el.poster_path}`
-          }
+          img={el.poster_path && `https://image.tmdb.org/t/p/w500/${el.poster_path}`}
+          pickOne={pickOne}
+        />
+      ));
+
+      break;
+
+    case 'music':
+      resultList = list.map(el => (
+        <ElementList
+          key={el.url}
+          id={el.id}
+          title={`${el.name} - ${el.artist}`}
+          img={el.image && el.image[1].text}
           pickOne={pickOne}
         />
       ));
