@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { getOneTvSeries } from '../../actions/searchResults';
-import { getOneBook } from '../../actions/searchResults';
+import { useQuery } from '@apollo/react-hooks';
+
 import { getOneMovie } from '../../actions/searchResults';
+import { addDetailsOfOne } from '../../actions/searchResults';
 
 import ElementList from '../atoms/ElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
+import { FIND_ONE_GAME } from '../../apollo';
 
 const StyledWrapper = styled.div`
   flex-grow: 1;
@@ -20,9 +23,9 @@ const StyledList = styled.ul`
   padding: 0;
 `;
 
-const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie }) => {
+const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie, addDetailsOfOne }) => {
   let [activeDetails, toggleDetails] = useState(false);
-
+  const { loading, fetchMore } = useQuery(FIND_ONE_GAME);
   console.log(list);
 
   const pickOne = id => {
@@ -30,6 +33,30 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie 
     if (activeType === 'tvseries') getOneTvSeries(id);
     if (activeType === 'books') getOneBook(id);
     if (activeType === 'films') getOneMovie(id);
+
+    if (activeType === 'games') {
+      fetchMore({
+        variables: {
+          id
+        },
+        updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+          if (!fetchMoreResult) return prev;
+          console.log(fetchMoreResult);
+          const [game] = fetchMoreResult.findGameById;
+
+          let date = new Date(+game.first_release_date);
+          console.log(date);
+          // const value = {
+          //     image: game.cover[0].url,
+          //     rating: game.rating,
+
+          // }
+
+          // const results = fetchMoreResult.findGameById[0].D
+          // addListResults(fetchMoreResult.fi);
+        }
+      });
+    }
 
     toggleDetails((activeDetails = true));
   };
@@ -115,7 +142,8 @@ const mapStateToProps = ({ activeType }) => ({
 const mapDispatchToProps = dispatch => ({
   getOneTvSeries: value => dispatch(getOneTvSeries(value)),
   getOneBook: value => dispatch(getOneTvSeries(value)),
-  getOneMovie: value => dispatch(getOneMovie(value))
+  getOneMovie: value => dispatch(getOneMovie(value)),
+  addDetailsOfOne: value => dispatch(addDetailsOfOne(value))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

@@ -35,18 +35,9 @@ const Search = ({
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
-
-    if (activeType === 'books') {
-      getListOfBooks(value);
-    }
-
-    if (activeType === 'films') {
-      getListOfMovies(value);
-    }
-
-    if (activeType === 'music') {
-      getListOfMusics(value);
-    }
+    if (activeType === 'books') getListOfBooks(value);
+    if (activeType === 'films') getListOfMovies(value);
+    if (activeType === 'music') getListOfMusics(value);
 
     if (activeType === 'games') {
       fetchMore({
@@ -61,6 +52,7 @@ const Search = ({
       });
     }
   };
+
   return (
     <>
       <Form
