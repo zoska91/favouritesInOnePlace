@@ -47,6 +47,7 @@ const StyledLogout = styled.button`
 `;
 
 const UserPanel = ({ user, toggleSidebar }) => {
+  console.log(user);
   const setError = err => {
     console.log(err);
   };
@@ -91,7 +92,7 @@ const UserPanel = ({ user, toggleSidebar }) => {
         <Modal text='Update succefull' toggleSidebar={toggleSidebar} />
       )}
       <Title>Hello {user.firstName}</Title>
-      <p>Do you want change something?</p>
+      <p>Do you want to change something?</p>
       <StyledForm onSubmit={e => onSubmit(e)}>
         <FormElement
           value={firstName}

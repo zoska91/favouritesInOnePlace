@@ -146,7 +146,7 @@ const SideBar = ({ isUserLogin }) => {
 };
 
 const mapStateToProps = ({ user }) => ({
-  isUserLogin: user.user
+  isUserLogin: user.user,
 });
 
 export default connect(mapStateToProps, null)(SideBar);
