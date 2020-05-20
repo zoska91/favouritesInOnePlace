@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getListOfTvSeries } from '../../actions/searchResults';
+import { getListOfBooks } from '../../actions/searchResults';
+import { getListOfMusics } from '../../actions/searchResults';
 import { addListResults } from '../../actions/searchResults';
+import { getListOfMovies } from '../../actions/searchResults';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
@@ -23,12 +26,18 @@ const Search = ({
   getListOfTvSeries,
   searchResultsList,
   activeType,
-  addListResults
+  addListResults,
+  getListOfBooks,
+  getListOfMovies,
+  getListOfMusics
 }) => {
   const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
+    if (activeType === 'books') getListOfBooks(value);
+    if (activeType === 'films') getListOfMovies(value);
+    if (activeType === 'music') getListOfMusics(value);
 
     if (activeType === 'games') {
       fetchMore({
@@ -43,6 +52,7 @@ const Search = ({
       });
     }
   };
+
   return (
     <>
       <Form
@@ -50,12 +60,7 @@ const Search = ({
         initialValues={{ value: '' }}
         render={({ handleSubmit, reset }) => (
           <form onSubmit={handleSubmit}>
-            <StyledInput
-              name='value'
-              component='input'
-              type='text'
-              placeholder='search'
-            />
+            <StyledInput name='value' component='input' type='text' placeholder='search' />
           </form>
         )}
       />
@@ -72,6 +77,9 @@ const mapStateToProps = ({ searchResults, activeType }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getListOfTvSeries: value => dispatch(getListOfTvSeries(value)),
+  getListOfBooks: value => dispatch(getListOfBooks(value)),
+  getListOfMovies: value => dispatch(getListOfMovies(value)),
+  getListOfMusics: value => dispatch(getListOfMusics(value)),
   addListResults: value => dispatch(addListResults(value))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

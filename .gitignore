@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 client/node_modules
+client/config
 /.pnp
 .pnp.js
 
@@ -26,5 +27,6 @@ yarn-error.log*
 
 # back-end
 config/database.json
+config/api-keys.json
 
 

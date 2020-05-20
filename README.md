@@ -26,4 +26,4 @@ I added back-end in NodeJS (experess) with api in grahql.
 
 to run app (with server):
 
-### `npm dev`
+### `npm run dev`

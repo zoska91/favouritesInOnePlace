@@ -12,15 +12,15 @@ type Game {
     rating: Float,
     summary: String,
     url: String,
-    cover: [Cover]
+    cover: [Cover],
+    first_release_date: String
 }
 
 
 extend type Query {
     findGameByName(name: String!): [Game],
+    findGameById(id: Int!): [Game],
   }
-
-
 
 
 `;
