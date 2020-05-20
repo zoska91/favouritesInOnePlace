@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { getOneTvSeries } from '../../actions/searchResults';
 import { useQuery } from '@apollo/react-hooks';
 
-import { getOneMovie } from '../../actions/searchResults';
-import { addDetailsOfOne } from '../../actions/searchResults';
+import {
+  getOneMovie,
+  getOneTvSeries,
+  addDetailsOfOne,
+} from '../../data/actions/searchResults';
 
 import ElementList from '../atoms/ElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
-import { FIND_ONE_GAME } from '../../apollo';
+import { FIND_ONE_GAME } from '../../data/apollo';
 
 const StyledWrapper = styled.div`
   flex-grow: 1;
@@ -23,7 +25,14 @@ const StyledList = styled.ul`
   padding: 0;
 `;
 
-const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie, addDetailsOfOne }) => {
+const ResultList = ({
+  list,
+  getOneTvSeries,
+  activeType,
+  getOneBook,
+  getOneMovie,
+  addDetailsOfOne,
+}) => {
   let [activeDetails, toggleDetails] = useState(false);
   const { loading, fetchMore } = useQuery(FIND_ONE_GAME);
   console.log(list);
@@ -37,7 +46,7 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie,
     if (activeType === 'games') {
       fetchMore({
         variables: {
-          id
+          id,
         },
         updateQuery: (prev, { fetchMoreResult, ...rest }) => {
           if (!fetchMoreResult) return prev;
@@ -54,7 +63,7 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie,
 
           // const results = fetchMoreResult.findGameById[0].D
           // addListResults(fetchMoreResult.fi);
-        }
+        },
       });
     }
 
@@ -78,7 +87,13 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie,
 
     case 'games':
       resultList = list.map(el => (
-        <ElementList key={el.id} id={el.id} title={el.name} img={el.cover && el.cover[0].url} pickOne={pickOne} />
+        <ElementList
+          key={el.id}
+          id={el.id}
+          title={el.name}
+          img={el.cover && el.cover[0].url}
+          pickOne={pickOne}
+        />
       ));
 
       break;
@@ -90,7 +105,10 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie,
             key={el.id}
             id={el.id}
             title={el.volumeInfo.title}
-            img={el.volumeInfo.imageLinks && el.volumeInfo.imageLinks.smallThumbnail}
+            img={
+              el.volumeInfo.imageLinks &&
+              el.volumeInfo.imageLinks.smallThumbnail
+            }
             pickOne={pickOne}
           />
         ));
@@ -104,7 +122,10 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie,
           key={el.id}
           id={el.id}
           title={el.title}
-          img={el.poster_path && `https://image.tmdb.org/t/p/w500/${el.poster_path}`}
+          img={
+            el.poster_path &&
+            `https://image.tmdb.org/t/p/w500/${el.poster_path}`
+          }
           pickOne={pickOne}
         />
       ));
@@ -136,14 +157,14 @@ const ResultList = ({ list, getOneTvSeries, activeType, getOneBook, getOneMovie,
 };
 
 const mapStateToProps = ({ activeType }) => ({
-  activeType: activeType.name
+  activeType: activeType.name,
 });
 
 const mapDispatchToProps = dispatch => ({
   getOneTvSeries: value => dispatch(getOneTvSeries(value)),
   getOneBook: value => dispatch(getOneTvSeries(value)),
   getOneMovie: value => dispatch(getOneMovie(value)),
-  addDetailsOfOne: value => dispatch(addDetailsOfOne(value))
+  addDetailsOfOne: value => dispatch(addDetailsOfOne(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

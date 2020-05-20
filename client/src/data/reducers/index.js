@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import activeTypeReducer from '../reducers/activeType';
-import searchResultsReducer from '../reducers/searchResults';
+import activeTypeReducer from './activeType';
+import searchResultsReducer from './searchResults';
 import userReducer from './user';
 
 const rootReducer = combineReducers({

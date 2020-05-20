@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import Flicking from '@egjs/react-flicking';
 import { connect } from 'react-redux';
-import { changeActiveType } from '../../actions/activeTyp';
-import { resetList } from '../../actions/searchResults';
-import { setNameType } from '../../actions/activeTyp';
+
+import { changeActiveType } from '../../data/actions/activeTyp';
+import { resetList } from '../../data/actions/searchResults';
+import { setNameType } from '../../data/actions/activeTyp';
 
 import Icon from '../atoms/Icon';
 import ImgMusic from '../../assets/music.png';
@@ -26,7 +27,7 @@ const Nav = ({
   changeTypeFn,
   setNameTypeFn,
   resetList,
-  isUserLogin
+  isUserLogin,
 }) => {
   const types = [
     { index: 0, name: 'music' },
@@ -35,7 +36,7 @@ const Nav = ({
     { index: 3, name: 'games' },
     { index: 4, name: 'tvseries' },
     { index: 5, name: 'links' },
-    { index: 6, name: 'notes' }
+    { index: 6, name: 'notes' },
   ];
 
   const activeType = e => {
@@ -67,13 +68,13 @@ const Nav = ({
 
 const mapStateToProps = ({ activeType, user }) => ({
   activeTypeIndex: activeType.index,
-  isUserLogin: user.user
+  isUserLogin: user.user,
 });
 
 const mapDispatchToProps = dispatch => ({
   changeTypeFn: type => dispatch(changeActiveType(type)),
   setNameTypeFn: name => dispatch(setNameType(name)),
-  resetList: () => dispatch(resetList())
+  resetList: () => dispatch(resetList()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

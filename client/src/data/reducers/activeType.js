@@ -1,9 +1,8 @@
-import { CHANGE_ACTIVE_TYPE } from '../actions/activeTyp';
-import { SET_NAME_TYPE } from '../actions/activeTyp';
+import { CHANGE_ACTIVE_TYPE, SET_NAME_TYPE } from '../actions/activeTyp';
 
 const INITIAL_STATE = {
   name: 'games',
-  index: 3
+  index: 3,
 };
 
 const activeTypeReducer = (state = INITIAL_STATE, action) => {
@@ -11,12 +10,12 @@ const activeTypeReducer = (state = INITIAL_STATE, action) => {
     case CHANGE_ACTIVE_TYPE:
       return {
         ...state,
-        index: action.item
+        index: action.item,
       };
     case SET_NAME_TYPE:
       return {
         ...state,
-        name: action.item
+        name: action.item,
       };
 
     default:

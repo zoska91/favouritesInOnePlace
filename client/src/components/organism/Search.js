@@ -1,16 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getListOfTvSeries } from '../../actions/searchResults';
-import { getListOfBooks } from '../../actions/searchResults';
-import { getListOfMusics } from '../../actions/searchResults';
-import { addListResults } from '../../actions/searchResults';
-import { getListOfMovies } from '../../actions/searchResults';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 
+import {
+  getListOfBooks,
+  getListOfMusics,
+  addListResults,
+  getListOfMovies,
+  getListOfTvSeries,
+} from '../../data/actions/searchResults';
+
 import ResultList from '../molecules/ResultList';
-import { FIND_ALL_GAMES_QUERY } from '../../apollo';
+import { FIND_ALL_GAMES_QUERY } from '../../data/apollo';
 
 const StyledInput = styled(Field)`
   text-align: center;
@@ -29,7 +32,7 @@ const Search = ({
   addListResults,
   getListOfBooks,
   getListOfMovies,
-  getListOfMusics
+  getListOfMusics,
 }) => {
   const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
 
@@ -42,13 +45,13 @@ const Search = ({
     if (activeType === 'games') {
       fetchMore({
         variables: {
-          name: value.value
+          name: value.value,
         },
         updateQuery: (prev, { fetchMoreResult, ...rest }) => {
           if (!fetchMoreResult) return prev;
           console.log(fetchMoreResult);
           addListResults(fetchMoreResult.findGameByName);
-        }
+        },
       });
     }
   };
@@ -60,7 +63,12 @@ const Search = ({
         initialValues={{ value: '' }}
         render={({ handleSubmit, reset }) => (
           <form onSubmit={handleSubmit}>
-            <StyledInput name='value' component='input' type='text' placeholder='search' />
+            <StyledInput
+              name='value'
+              component='input'
+              type='text'
+              placeholder='search'
+            />
           </form>
         )}
       />
@@ -72,7 +80,7 @@ const Search = ({
 
 const mapStateToProps = ({ searchResults, activeType }) => ({
   searchResultsList: searchResults.list,
-  activeType: activeType.name
+  activeType: activeType.name,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -80,6 +88,6 @@ const mapDispatchToProps = dispatch => ({
   getListOfBooks: value => dispatch(getListOfBooks(value)),
   getListOfMovies: value => dispatch(getListOfMovies(value)),
   getListOfMusics: value => dispatch(getListOfMusics(value)),
-  addListResults: value => dispatch(addListResults(value))
+  addListResults: value => dispatch(addListResults(value)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

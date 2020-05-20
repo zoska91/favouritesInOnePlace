@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { SIGNUP_USER } from '../../apollo/auth';
 import { useMutation } from '@apollo/react-hooks';
+
+import { SIGNUP_USER } from '../../data/apollo/auth';
 
 import Submit from '../atoms/Submit';
 import Button from '../atoms/Button';
@@ -38,7 +39,7 @@ const SignUp = ({ setTypeOfUserPanel }) => {
 
   const [singup, { error }] = useMutation(SIGNUP_USER, {
     onCompleted: toLogin,
-    onError: setError
+    onError: setError,
   });
 
   return (
@@ -46,7 +47,7 @@ const SignUp = ({ setTypeOfUserPanel }) => {
       onSubmit={e => {
         e.preventDefault();
         singup({
-          variables: { email: email, password: password }
+          variables: { email: email, password: password },
         });
       }}
     >

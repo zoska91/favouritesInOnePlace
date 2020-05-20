@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { useMutation } from '@apollo/react-hooks';
 
-import { UPDATE_USER } from '../../apollo/user';
+import { UPDATE_USER } from '../../data/apollo/user';
 
 import ImgLogout from '../../assets/exit.png';
 import FormElement from '../atoms/FormElement';
@@ -60,7 +60,7 @@ const UserPanel = ({ user, toggleSidebar }) => {
   const [errors, setErrors] = useState('');
 
   const [updateUser] = useMutation(UPDATE_USER, {
-    onError: setError
+    onError: setError,
   });
 
   const logOut = () => {
@@ -79,7 +79,7 @@ const UserPanel = ({ user, toggleSidebar }) => {
       return;
     } else {
       updateUser({
-        variables: { id: user.id, firstName, lastName, email, password }
+        variables: { id: user.id, firstName, lastName, email, password },
       });
       setSuccefull(true);
     }
@@ -150,7 +150,7 @@ const UserPanel = ({ user, toggleSidebar }) => {
 };
 
 const mapStateToProps = ({ user }) => ({
-  user: user.user
+  user: user.user,
 });
 
 export default connect(mapStateToProps, null)(UserPanel);

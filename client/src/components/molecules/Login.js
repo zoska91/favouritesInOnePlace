@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
 
-import { setUser } from '../../actions/user';
-import { LOGIN_USER } from '../../apollo/auth';
+import { setUser } from '../../data/actions/user';
+import { LOGIN_USER } from '../../data/apollo/auth';
 
 import Submit from '../atoms/Submit';
 import Button from '../atoms/Button';
@@ -42,13 +42,13 @@ const Login = ({ setTypeOfUserPanel, setUserFn }) => {
 
   const [loginUser, { error }] = useMutation(LOGIN_USER, {
     onCompleted: setToken,
-    onError: setError
+    onError: setError,
   });
 
   const onSubmit = e => {
     e.preventDefault();
     loginUser({
-      variables: { email, password }
+      variables: { email, password },
     });
   };
 
@@ -79,7 +79,7 @@ const Login = ({ setTypeOfUserPanel, setUserFn }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setUserFn: type => dispatch(setUser(type))
+  setUserFn: type => dispatch(setUser(type)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

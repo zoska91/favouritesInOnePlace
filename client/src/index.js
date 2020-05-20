@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import store from './store';
+import store from './data/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
@@ -11,8 +11,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   headers: {
-    authorization: localStorage.getItem('token')
-  }
+    authorization: localStorage.getItem('token'),
+  },
 });
 
 ReactDOM.render(

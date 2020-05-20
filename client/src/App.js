@@ -4,12 +4,12 @@ import { routes } from './routes';
 import { connect } from 'react-redux';
 import { useQuery } from '@apollo/react-hooks';
 
-import { setUser } from './actions/user';
+import { setUser } from './data/actions/user';
 
 import Home from './views/Home';
 import MainTemplate from './templates/MainTemplate';
 import Header from './components/organism/Header';
-import { GET_USER_INFO } from './apollo/user';
+import { GET_USER_INFO } from './data/apollo/user';
 
 const App = ({ setUserFn }) => {
   const { data } = useQuery(GET_USER_INFO);
@@ -29,7 +29,7 @@ const App = ({ setUserFn }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setUserFn: type => dispatch(setUser(type))
+  setUserFn: type => dispatch(setUser(type)),
 });
 
 //Slideable Navigation Drawer

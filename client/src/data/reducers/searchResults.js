@@ -1,10 +1,12 @@
-import { ADD_LIST_RESULTS } from '../actions/searchResults';
-import { ADD_DETAILS_OF_ONE } from '../actions/searchResults';
-import { RESET_LIST } from '../actions/searchResults';
+import {
+  ADD_LIST_RESULTS,
+  ADD_DETAILS_OF_ONE,
+  RESET_LIST,
+} from '../actions/searchResults';
 
 const INITIAL_STATE = {
   list: [],
-  detailsOfOne: []
+  detailsOfOne: [],
 };
 
 const searchResultsReducer = (state = INITIAL_STATE, action) => {
@@ -12,19 +14,19 @@ const searchResultsReducer = (state = INITIAL_STATE, action) => {
     case ADD_LIST_RESULTS:
       return {
         ...state,
-        list: action.item
+        list: action.item,
       };
 
     case ADD_DETAILS_OF_ONE:
       return {
         ...state,
-        detailsOfOne: action.item
+        detailsOfOne: action.item,
       };
 
     case RESET_LIST:
       return {
         ...state,
-        list: []
+        list: [],
       };
 
     default:
