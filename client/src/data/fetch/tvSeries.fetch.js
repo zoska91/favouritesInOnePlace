@@ -7,7 +7,6 @@ export const fetchTvSeries = async ({ value }) => {
 };
 
 export const fetchOneTvSeries = async value => {
-  console.log(value);
   const resp = await fetch(`http://api.tvmaze.com/shows/${value}`, {
     method: 'GET',
   });

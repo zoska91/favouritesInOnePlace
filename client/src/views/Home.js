@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import Indicator from '../components/atoms/Indicator';
 
 import Search from '../components/organism/Search';
 import Title from '../components/atoms/Title';
@@ -17,13 +18,15 @@ const Home = ({ activeTypeName }) => {
   return (
     <StyledWrapper>
       <Title>{activeTypeName}</Title>
-      <Search />
+      <Suspense fallback={<Indicator />}>
+        <Search />
+      </Suspense>
     </StyledWrapper>
   );
 };
 
 const mapStateToProps = ({ activeType }) => ({
-  activeTypeName: activeType.name
+  activeTypeName: activeType.name,
 });
 
 export default connect(mapStateToProps, null)(Home);

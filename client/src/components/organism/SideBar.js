@@ -134,12 +134,14 @@ const SideBar = ({ isUserLogin }) => {
             alt='Icon made by Freeplk from www.flaticon.com'
           />
         </StyledIcon>
-        <StyledIcon>
-          <img
-            src={SearchIcon}
-            alt='Icon made by Freeplk from www.flaticon.com'
-          />
-        </StyledIcon>
+        {isUserLogin && (
+          <StyledIcon>
+            <img
+              src={SearchIcon}
+              alt='Icon made by Freeplk from www.flaticon.com'
+            />
+          </StyledIcon>
+        )}
       </StyledList>
     </StyledWrapper>
   );

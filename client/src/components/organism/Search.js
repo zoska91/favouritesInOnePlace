@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery as useQueryApollo, useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from 'react-query';
 
 import {
   getListOfBooks,
@@ -14,6 +15,8 @@ import {
 
 import ResultList from '../molecules/ResultList';
 import { FIND_ALL_GAMES_QUERY } from '../../data/apollo';
+import { fetchTvSeries } from '../../data/fetch/tvSeries.fetch';
+import Indicator from '../atoms/Indicator';
 
 const StyledInput = styled(Field)`
   text-align: center;
@@ -34,7 +37,12 @@ const Search = ({
   getListOfMovies,
   getListOfMusics,
 }) => {
-  const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
+  const [getListGames, { called, loading, data }] = useLazyQuery(
+    FIND_ALL_GAMES_QUERY,
+    {
+      onCompleted: data => addListResults(data.findGameByName),
+    }
+  );
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
@@ -43,16 +51,7 @@ const Search = ({
     if (activeType === 'music') getListOfMusics(value);
 
     if (activeType === 'games') {
-      fetchMore({
-        variables: {
-          name: value.value,
-        },
-        updateQuery: (prev, { fetchMoreResult, ...rest }) => {
-          if (!fetchMoreResult) return prev;
-          console.log(fetchMoreResult);
-          addListResults(fetchMoreResult.findGameByName);
-        },
-      });
+      getListGames({ variables: { name: value.value } });
     }
   };
 
@@ -72,7 +71,7 @@ const Search = ({
           </form>
         )}
       />
-      {loading && <p>one moment, please :)</p>}
+      {loading && <Indicator />}
       {searchResultsList && <ResultList list={searchResultsList} />}
     </>
   );

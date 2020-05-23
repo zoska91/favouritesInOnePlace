@@ -4,9 +4,9 @@ export const GET_USER_INFO = gql`
   query userInfo {
     me {
       id
+      lastName
       firstName
       email
-      lastName
     }
   }
 `;
