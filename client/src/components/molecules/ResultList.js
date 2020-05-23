@@ -37,10 +37,8 @@ const ResultList = ({
   let [activeDetails, toggleDetails] = useState(false);
   const [getOneGame, { loading }] = useLazyQuery(FIND_ONE_GAME, {
     onCompleted: resp => {
-      console.log(resp.findGameById[0]);
       const data = resp.findGameById[0];
       const time = new Date(+data.first_release_date * 1000);
-
       const game = {
         image: `https:${data.cover[0].url}`,
         rating: Math.floor(data.rating),
@@ -56,11 +54,7 @@ const ResultList = ({
     if (activeType === 'tvseries') getOneTvSeries(id);
     if (activeType === 'books') getOneBook(id);
     if (activeType === 'films') getOneMovie(id);
-
-    if (activeType === 'games') {
-      console.log('go');
-      getOneGame({ variables: { id } });
-    }
+    if (activeType === 'games') getOneGame({ variables: { id } });
 
     toggleDetails((activeDetails = true));
   };

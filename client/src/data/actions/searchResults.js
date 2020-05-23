@@ -9,11 +9,6 @@ export const RESET_LIST = 'RESET_LIST';
 
 //TVSERIES ------------------------------------------------
 
-export const getListOfTvSeries = value => async dispatch => {
-  const list = await fetchTvSeries(value);
-  dispatch(addListResults(list));
-};
-
 export const getOneTvSeries = value => async dispatch => {
   const details = await fetchOneTvSeries(value);
   dispatch(addDetailsOfOne(details));

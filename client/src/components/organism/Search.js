@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
 import { useLazyQuery } from '@apollo/react-hooks';
 
@@ -9,14 +8,14 @@ import {
   getListOfMusics,
   addListResults,
   getListOfMovies,
-  getListOfTvSeries,
 } from '../../data/actions/searchResults';
+import useTvseriesList from '../../data/fetch/tvSeries.fetch';
 
 import ResultList from '../molecules/ResultList';
-import { FIND_ALL_GAMES_QUERY } from '../../data/apollo/games';
 import Indicator from '../atoms/Indicator';
+import { FIND_ALL_GAMES_QUERY } from '../../data/apollo/games';
 
-const StyledInput = styled(Field)`
+const StyledInput = styled.input`
   text-align: center;
   border: none;
   background-color: transparent;
@@ -27,7 +26,6 @@ const StyledInput = styled(Field)`
 `;
 
 const Search = ({
-  getListOfTvSeries,
   searchResultsList,
   activeType,
   addListResults,
@@ -35,39 +33,52 @@ const Search = ({
   getListOfMovies,
   getListOfMusics,
 }) => {
+  let [inputValue, setInputValue] = useState('');
+  const [list, setList] = useState([]);
+  //get games list
   const [getListGames, { loading }] = useLazyQuery(FIND_ALL_GAMES_QUERY, {
-    onCompleted: data => addListResults(data.findGameByName),
+    onCompleted: data => setList(data.findGameByName),
   });
 
-  const onSubmit = (value = 'witcher') => {
-    if (activeType === 'tvseries') getListOfTvSeries(value);
-    if (activeType === 'books') getListOfBooks(value);
-    if (activeType === 'films') getListOfMovies(value);
-    if (activeType === 'music') getListOfMusics(value);
+  // get tv series list
+  const {
+    status,
+    data,
+    error,
+    refetch: refetchTvSeries,
+    isFetching,
+  } = useTvseriesList(inputValue);
+  console.log(status, data, error, refetchTvSeries, isFetching);
+
+  const onSubmit = e => {
+    e.preventDefault();
+    if (activeType === 'tvseries') refetchTvSeries();
+    if (activeType === 'books') getListOfBooks(inputValue);
+    if (activeType === 'films') getListOfMovies(inputValue);
+    if (activeType === 'music') getListOfMusics(inputValue);
 
     if (activeType === 'games') {
-      getListGames({ variables: { name: value.value } });
+      getListGames({ variables: { name: inputValue } });
     }
   };
 
   return (
     <>
-      <Form
-        onSubmit={onSubmit}
-        initialValues={{ value: '' }}
-        render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <StyledInput
-              name='value'
-              component='input'
-              type='text'
-              placeholder='search'
-            />
-          </form>
-        )}
-      />
-      {loading && <Indicator />}
-      {searchResultsList && <ResultList list={searchResultsList} />}
+      <form onSubmit={onSubmit}>
+        <StyledInput
+          name='value'
+          component='input'
+          type='text'
+          placeholder='search'
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+        />
+      </form>
+
+      {loading || (status === 'loading' && <Indicator />)}
+      {status === 'error' && <span>error.message</span>}
+      <div>{isFetching ? <Indicator /> : null}</div>
+      {searchResultsList && <ResultList list={list} />}
     </>
   );
 };
@@ -78,7 +89,6 @@ const mapStateToProps = ({ searchResults, activeType }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getListOfTvSeries: value => dispatch(getListOfTvSeries(value)),
   getListOfBooks: value => dispatch(getListOfBooks(value)),
   getListOfMovies: value => dispatch(getListOfMovies(value)),
   getListOfMusics: value => dispatch(getListOfMusics(value)),
