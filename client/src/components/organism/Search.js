@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
-import { useQuery as useQueryApollo, useLazyQuery } from '@apollo/react-hooks';
-import { useQuery } from 'react-query';
+import { useLazyQuery } from '@apollo/react-hooks';
 
 import {
   getListOfBooks,
@@ -14,8 +13,7 @@ import {
 } from '../../data/actions/searchResults';
 
 import ResultList from '../molecules/ResultList';
-import { FIND_ALL_GAMES_QUERY } from '../../data/apollo';
-import { fetchTvSeries } from '../../data/fetch/tvSeries.fetch';
+import { FIND_ALL_GAMES_QUERY } from '../../data/apollo/games';
 import Indicator from '../atoms/Indicator';
 
 const StyledInput = styled(Field)`
@@ -37,12 +35,9 @@ const Search = ({
   getListOfMovies,
   getListOfMusics,
 }) => {
-  const [getListGames, { called, loading, data }] = useLazyQuery(
-    FIND_ALL_GAMES_QUERY,
-    {
-      onCompleted: data => addListResults(data.findGameByName),
-    }
-  );
+  const [getListGames, { loading }] = useLazyQuery(FIND_ALL_GAMES_QUERY, {
+    onCompleted: data => addListResults(data.findGameByName),
+  });
 
   const onSubmit = (value = 'witcher') => {
     if (activeType === 'tvseries') getListOfTvSeries(value);
@@ -60,7 +55,7 @@ const Search = ({
       <Form
         onSubmit={onSubmit}
         initialValues={{ value: '' }}
-        render={({ handleSubmit, reset }) => (
+        render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <StyledInput
               name='value'

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 
 import {
   getOneMovie,
@@ -11,7 +11,8 @@ import {
 
 import ElementList from '../atoms/ElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
-import { FIND_ONE_GAME } from '../../data/apollo';
+import { FIND_ONE_GAME } from '../../data/apollo/games';
+import Indicator from '../atoms/Indicator';
 
 const StyledWrapper = styled.div`
   flex-grow: 1;
@@ -24,7 +25,7 @@ const StyledList = styled.ul`
   list-style: none;
   padding: 0;
 `;
-
+//"1431993600"
 const ResultList = ({
   list,
   getOneTvSeries,
@@ -34,9 +35,22 @@ const ResultList = ({
   addDetailsOfOne,
 }) => {
   let [activeDetails, toggleDetails] = useState(false);
-  const { loading, fetchMore } = useQuery(FIND_ONE_GAME);
-  console.log(list);
+  const [getOneGame, { loading }] = useLazyQuery(FIND_ONE_GAME, {
+    onCompleted: resp => {
+      console.log(resp.findGameById[0]);
+      const data = resp.findGameById[0];
+      const time = new Date(+data.first_release_date * 1000);
 
+      const game = {
+        image: `https:${data.cover[0].url}`,
+        rating: Math.floor(data.rating),
+        name: data.name,
+        officialSite: data.url,
+        premiered: `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`,
+      };
+      addDetailsOfOne(game);
+    },
+  });
   const pickOne = id => {
     console.log(id, activeType);
     if (activeType === 'tvseries') getOneTvSeries(id);
@@ -44,31 +58,14 @@ const ResultList = ({
     if (activeType === 'films') getOneMovie(id);
 
     if (activeType === 'games') {
-      fetchMore({
-        variables: {
-          id,
-        },
-        updateQuery: (prev, { fetchMoreResult, ...rest }) => {
-          if (!fetchMoreResult) return prev;
-          console.log(fetchMoreResult);
-          const [game] = fetchMoreResult.findGameById;
-
-          let date = new Date(+game.first_release_date);
-          console.log(date);
-          // const value = {
-          //     image: game.cover[0].url,
-          //     rating: game.rating,
-
-          // }
-
-          // const results = fetchMoreResult.findGameById[0].D
-          // addListResults(fetchMoreResult.fi);
-        },
-      });
+      console.log('go');
+      getOneGame({ variables: { id } });
     }
 
     toggleDetails((activeDetails = true));
   };
+
+  console.log(list);
 
   let resultList;
   switch (activeType) {
@@ -150,6 +147,7 @@ const ResultList = ({
   }
   return (
     <StyledWrapper>
+      {loading && <Indicator />}
       <StyledList>{resultList}</StyledList>
       {activeDetails && <DetailsOfOne toggleDetails={toggleDetails} />}
     </StyledWrapper>
