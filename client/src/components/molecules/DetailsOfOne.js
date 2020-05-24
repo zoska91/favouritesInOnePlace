@@ -110,7 +110,9 @@ const DetailsOfOne = ({ details, toggleDetails }) => {
             <StyleTitle>{details.name}</StyleTitle>
           </StyledRatingTitle>
           {details.premiered && <p>premiered: {details.premiered}</p>}
-          <StyledLink href={details.officialSite}>official site</StyledLink>
+          <StyledLink href={details.officialSite} target='_blank'>
+            official site
+          </StyledLink>
           <StyledButtons>
             <Button
               img={ImgButtonX}
