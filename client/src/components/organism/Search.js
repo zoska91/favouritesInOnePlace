@@ -6,6 +6,7 @@ import { fetchTvSeries } from '../../data/fetch/tvSeries.fetch';
 import { fetchMusics } from '../../data/fetch/music.fetch';
 import { fetchMovies } from '../../data/fetch/movies.fetch';
 import { fetchBooks } from '../../data/fetch/books.fetch';
+import { toggleSearchlist } from '../../data/actions/components';
 
 import ResultList from '../molecules/ResultList';
 import ResultListGames from '../molecules/ResultListGames';
@@ -20,9 +21,8 @@ const StyledInput = styled.input`
   margin-bottom: 2vh;
 `;
 
-const Search = ({ activeType }) => {
+const Search = ({ activeType, searchListVisible, toggleSearchlist }) => {
   const [inputValue, setInputValue] = useState('');
-  const [showList, setShowList] = useState(false);
 
   let func = fetchTvSeries;
 
@@ -48,7 +48,8 @@ const Search = ({ activeType }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    setShowList(true);
+
+    toggleSearchlist(true);
   };
 
   return (
@@ -63,7 +64,7 @@ const Search = ({ activeType }) => {
           onChange={e => setInputValue(e.target.value)}
         />
       </form>
-      {showList &&
+      {searchListVisible &&
         (activeType === 'games' ? (
           <ResultListGames value={inputValue} />
         ) : (
@@ -73,8 +74,13 @@ const Search = ({ activeType }) => {
   );
 };
 
-const mapStateToProps = ({ searchResults, activeType }) => ({
+const mapStateToProps = ({ activeType, components }) => ({
   activeType: activeType.name,
+  searchListVisible: components.searchListVisible,
 });
 
-export default connect(mapStateToProps)(Search);
+const mapDispatchToProps = dispatch => ({
+  toggleSearchlist: value => dispatch(toggleSearchlist(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

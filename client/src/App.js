@@ -10,11 +10,14 @@ import Home from './views/Home';
 import MainTemplate from './templates/MainTemplate';
 import Header from './components/organism/Header';
 import { GET_USER_INFO } from './data/apollo/user';
+import Indicator from './components/atoms/Indicator';
 
 const App = ({ setUserFn }) => {
-  const { data } = useQuery(GET_USER_INFO);
+  const { loading } = useQuery(GET_USER_INFO, {
+    onCompleted: data => setUserFn(data.me),
+  });
 
-  if (data) setUserFn(data.me);
+  if (loading) return <Indicator />;
 
   return (
     <Router>

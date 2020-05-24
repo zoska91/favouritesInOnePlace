@@ -2,10 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import Flicking from '@egjs/react-flicking';
 import { connect } from 'react-redux';
+import { queryCache } from 'react-query';
 
 import { changeActiveType } from '../../data/actions/activeTyp';
-import { resetList } from '../../data/actions/searchResults';
 import { setNameType } from '../../data/actions/activeTyp';
+import { toggleSearchlist } from '../../data/actions/components';
 
 import Icon from '../atoms/Icon';
 import ImgMusic from '../../assets/music.png';
@@ -26,8 +27,8 @@ const Nav = ({
   activeTypeIndex,
   changeTypeFn,
   setNameTypeFn,
-  resetList,
   isUserLogin,
+  toggleSearchlist,
 }) => {
   const types = [
     { index: 0, name: 'music' },
@@ -40,7 +41,8 @@ const Nav = ({
   ];
 
   const activeType = e => {
-    resetList();
+    toggleSearchlist(false);
+    queryCache.clear();
     changeTypeFn(e.index);
     const name = types.filter(el => el.index === e.index);
     setNameTypeFn(name[0].name);
@@ -74,7 +76,7 @@ const mapStateToProps = ({ activeType, user }) => ({
 const mapDispatchToProps = dispatch => ({
   changeTypeFn: type => dispatch(changeActiveType(type)),
   setNameTypeFn: name => dispatch(setNameType(name)),
-  resetList: () => dispatch(resetList()),
+  toggleSearchlist: value => dispatch(toggleSearchlist(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

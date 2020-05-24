@@ -78,8 +78,3 @@ export const addDetailsOfOne = item => ({
   type: ADD_DETAILS_OF_ONE,
   item,
 });
-
-export const resetList = item => ({
-  type: RESET_LIST,
-  item,
-});

@@ -12,12 +12,6 @@ const searchResultsReducer = (state = INITIAL_STATE, action) => {
         detailsOfOne: action.item,
       };
 
-    case RESET_LIST:
-      return {
-        ...state,
-        list: [],
-      };
-
     default:
       return state;
   }
