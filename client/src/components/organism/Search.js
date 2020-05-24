@@ -1,21 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/react-hooks';
 
-import {
-  getListOfBooks,
-  getListOfMusics,
-  addListResults,
-  getListOfMovies,
-  getListOfTvSeries,
-} from '../../data/actions/searchResults';
+import { fetchTvSeries } from '../../data/fetch/tvSeries.fetch';
+import { fetchMusics } from '../../data/fetch/music.fetch';
+import { fetchMovies } from '../../data/fetch/movies.fetch';
+import { fetchBooks } from '../../data/fetch/books.fetch';
 
 import ResultList from '../molecules/ResultList';
-import { FIND_ALL_GAMES_QUERY } from '../../data/apollo';
+import ResultListGames from '../molecules/ResultListGames';
 
-const StyledInput = styled(Field)`
+const StyledInput = styled.input`
   text-align: center;
   border: none;
   background-color: transparent;
@@ -25,69 +20,61 @@ const StyledInput = styled(Field)`
   margin-bottom: 2vh;
 `;
 
-const Search = ({
-  getListOfTvSeries,
-  searchResultsList,
-  activeType,
-  addListResults,
-  getListOfBooks,
-  getListOfMovies,
-  getListOfMusics,
-}) => {
-  const { loading, fetchMore } = useQuery(FIND_ALL_GAMES_QUERY);
+const Search = ({ activeType }) => {
+  const [inputValue, setInputValue] = useState('');
+  const [showList, setShowList] = useState(false);
 
-  const onSubmit = (value = 'witcher') => {
-    if (activeType === 'tvseries') getListOfTvSeries(value);
-    if (activeType === 'books') getListOfBooks(value);
-    if (activeType === 'films') getListOfMovies(value);
-    if (activeType === 'music') getListOfMusics(value);
+  let func = fetchTvSeries;
 
-    if (activeType === 'games') {
-      fetchMore({
-        variables: {
-          name: value.value,
-        },
-        updateQuery: (prev, { fetchMoreResult, ...rest }) => {
-          if (!fetchMoreResult) return prev;
-          console.log(fetchMoreResult);
-          addListResults(fetchMoreResult.findGameByName);
-        },
-      });
-    }
+  switch (activeType) {
+    case 'tvseries':
+      func = fetchTvSeries;
+      break;
+
+    case 'books':
+      func = fetchBooks;
+      break;
+
+    case 'films':
+      func = fetchMovies;
+      break;
+    case 'music':
+      func = fetchMusics;
+      break;
+
+    default:
+      break;
+  }
+
+  const onSubmit = e => {
+    e.preventDefault();
+    setShowList(true);
   };
 
   return (
     <>
-      <Form
-        onSubmit={onSubmit}
-        initialValues={{ value: '' }}
-        render={({ handleSubmit, reset }) => (
-          <form onSubmit={handleSubmit}>
-            <StyledInput
-              name='value'
-              component='input'
-              type='text'
-              placeholder='search'
-            />
-          </form>
-        )}
-      />
-      {loading && <p>one moment, please :)</p>}
-      {searchResultsList && <ResultList list={searchResultsList} />}
+      <form onSubmit={onSubmit}>
+        <StyledInput
+          name='value'
+          component='input'
+          type='text'
+          placeholder='search'
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+        />
+      </form>
+      {showList &&
+        (activeType === 'games' ? (
+          <ResultListGames value={inputValue} />
+        ) : (
+          <ResultList value={inputValue} useFunc={func} />
+        ))}
     </>
   );
 };
 
 const mapStateToProps = ({ searchResults, activeType }) => ({
-  searchResultsList: searchResults.list,
   activeType: activeType.name,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getListOfTvSeries: value => dispatch(getListOfTvSeries(value)),
-  getListOfBooks: value => dispatch(getListOfBooks(value)),
-  getListOfMovies: value => dispatch(getListOfMovies(value)),
-  getListOfMusics: value => dispatch(getListOfMusics(value)),
-  addListResults: value => dispatch(addListResults(value)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps)(Search);

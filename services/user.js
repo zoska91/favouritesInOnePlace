@@ -9,12 +9,7 @@ const generateToken = user => {
   return jwt.sign({ userId: user.id }, SECRET, { expiresIn: '30d' });
 };
 
-export const registerUser = async (
-  firstName,
-  lastName,
-  email,
-  passwordPlane
-) => {
+export const registerUser = async (firstName, lastName, email, passwordPlane) => {
   const password = await bcrypt.hash(passwordPlane, 10);
 
   const user = await models.User.findOne({ where: { email } });

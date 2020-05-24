@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { ReactQueryConfigProvider } from 'react-query';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -15,12 +16,18 @@ const client = new ApolloClient({
   },
 });
 
+const queryConfig = {
+  suspense: true,
+};
+
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </ApolloProvider>,
+  <ReactQueryConfigProvider config={queryConfig}>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ApolloProvider>
+  </ReactQueryConfigProvider>,
   document.getElementById('root')
 );
 

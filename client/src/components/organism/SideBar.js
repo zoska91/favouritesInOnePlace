@@ -134,19 +134,21 @@ const SideBar = ({ isUserLogin }) => {
             alt='Icon made by Freeplk from www.flaticon.com'
           />
         </StyledIcon>
-        <StyledIcon>
-          <img
-            src={SearchIcon}
-            alt='Icon made by Freeplk from www.flaticon.com'
-          />
-        </StyledIcon>
+        {isUserLogin && (
+          <StyledIcon>
+            <img
+              src={SearchIcon}
+              alt='Icon made by Freeplk from www.flaticon.com'
+            />
+          </StyledIcon>
+        )}
       </StyledList>
     </StyledWrapper>
   );
 };
 
 const mapStateToProps = ({ user }) => ({
-  isUserLogin: user.user
+  isUserLogin: user.user,
 });
 
 export default connect(mapStateToProps, null)(SideBar);

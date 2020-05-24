@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import ImgNoImage from '../../assets/noImage.png';
-import Button from '../atoms/Button';
 import ImgButtonAdd from '../../assets/add.png';
 import ImgButtonX from '../../assets/X.png';
+
+import Indicator from '../atoms/Indicator';
+import Button from '../atoms/Button';
 
 const StyledWrapper = styled.div`
   position: fixed;
@@ -15,7 +17,7 @@ const StyledWrapper = styled.div`
   height: 95vh;
   width: 90vw;
   padding: 3vh 5vw;
-  z-index: 2001;
+  z-index: 10001;
   border-radius: 15px;
   border: 10px solid ${({ theme }) => theme.iconActiveBorder};
   box-shadow: inset 5px 5px 10px 15px ${({ theme }) => theme.shadow};
@@ -90,35 +92,42 @@ const StyledButtons = styled.div`
 `;
 
 const DetailsOfOne = ({ details, toggleDetails }) => {
+  console.log(details);
+
   return (
     <StyledWrapper>
-      <StyledImg>
-        <img
-          src={details.image ? details.image.medium : ImgNoImage}
-          alt='foto'
-        />
-      </StyledImg>
-      <StyledRatingTitle>
-        <StyledRating>
-          {details.rating && <p>{details.rating.average}</p>}
-        </StyledRating>
-        <StyleTitle>{details.name}</StyleTitle>
-      </StyledRatingTitle>
-      <p>premiered: {details.premiered}</p>
-      <StyledLink href={details.officialSite}>official site</StyledLink>
-      <StyledButtons>
-        <Button
-          img={ImgButtonX}
-          onClick={() => toggleDetails((toggleDetails = false))}
-        ></Button>
-        <Button img={ImgButtonAdd}></Button>
-      </StyledButtons>
+      {details.length < 1 ? (
+        <Indicator />
+      ) : (
+        <>
+          <StyledImg>
+            <img src={details.image ? details.image : ImgNoImage} alt='foto' />
+          </StyledImg>
+          <StyledRatingTitle>
+            <StyledRating>
+              <p>{details.rating}</p>
+            </StyledRating>
+            <StyleTitle>{details.name}</StyleTitle>
+          </StyledRatingTitle>
+          {details.premiered && <p>premiered: {details.premiered}</p>}
+          <StyledLink href={details.officialSite} target='_blank'>
+            official site
+          </StyledLink>
+          <StyledButtons>
+            <Button
+              img={ImgButtonX}
+              onClick={() => toggleDetails((toggleDetails = false))}
+            ></Button>
+            <Button img={ImgButtonAdd}></Button>
+          </StyledButtons>
+        </>
+      )}
     </StyledWrapper>
   );
 };
 
 const mapStateToProps = ({ searchResults }) => ({
-  details: searchResults.detailsOfOne
+  details: searchResults.detailsOfOne,
 });
 
 export default connect(mapStateToProps, null)(DetailsOfOne);

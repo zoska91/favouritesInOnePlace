@@ -1,66 +1,78 @@
-import { fetchBooks } from '../fetch/books.fetch';
-import { fetchTvSeries, fetchOneTvSeries } from '../fetch/tvSeries.fetch';
-import { fetchMovies, fetchOneMovie } from '../fetch/movies.fetch';
-import { fetchMusics, fetchOneMusic } from '../fetch/music.fetch';
+import { fetchOneBooks } from '../fetch/books.fetch';
+import { fetchOneTvSeries } from '../fetch/tvSeries.fetch';
+import { fetchOneMovie } from '../fetch/movies.fetch';
+import { fetchOneMusic } from '../fetch/music.fetch';
 
-export const ADD_LIST_RESULTS = 'ADD_LIST_RESULTS';
 export const ADD_DETAILS_OF_ONE = 'ADD_DETAILS_OF_ONE';
 export const RESET_LIST = 'RESET_LIST';
 
 //TVSERIES ------------------------------------------------
 
-export const getListOfTvSeries = value => async dispatch => {
-  const list = await fetchTvSeries(value);
-  dispatch(addListResults(list));
-};
-
 export const getOneTvSeries = value => async dispatch => {
   const details = await fetchOneTvSeries(value);
-  dispatch(addDetailsOfOne(details));
+
+  const tvseries = {
+    image: details.image?.medium,
+    rating: details.rating?.average,
+    name: details.name,
+    officialSite: details.url,
+    premiered: details.premiered,
+  };
+
+  dispatch(addDetailsOfOne(tvseries));
 };
 
 //BOOKS ------------------------------------------------
 
-export const getListOfBooks = value => async dispatch => {
-  const list = await fetchBooks(value);
-  dispatch(addListResults(list));
-};
-
 export const getOneBook = value => async dispatch => {
-  const details = await fetchBooks(value);
-  dispatch(addDetailsOfOne(details));
+  const { volumeInfo } = await fetchOneBooks(value);
+
+  const book = {
+    image: volumeInfo.imageLinks?.thumbnail,
+    rating: volumeInfo.averageRating,
+    name: volumeInfo.title,
+    officialSite: volumeInfo.infoLink,
+    premiered: volumeInfo.publishedDate,
+  };
+
+  dispatch(addDetailsOfOne(book));
 };
 
 //FILMS ------------------------------------------------
 
-export const getListOfMovies = value => async dispatch => {
-  const list = await fetchMovies(value);
-  dispatch(addListResults(list));
-};
-
 export const getOneMovie = value => async dispatch => {
   const details = await fetchOneMovie(value);
-  dispatch(addDetailsOfOne(details));
+
+  const movie = {
+    image:
+      details.poster_path &&
+      `https://image.tmdb.org/t/p/w500/${details.poster_path}`,
+    rating: details.vote_average,
+    name: details.title,
+    officialSite: details.homepage,
+    premiered: details.release_date,
+  };
+
+  dispatch(addDetailsOfOne(movie));
 };
 
 // MUSIC ----------------------------------------------
 
-export const getListOfMusics = value => async dispatch => {
-  const list = await fetchMusics(value);
-  dispatch(addListResults(list.trackmatches.track));
-};
-
 export const getOneMusic = value => async dispatch => {
-  const details = await fetchOneMusic(value);
-  dispatch(addDetailsOfOne(details));
+  const { track } = await fetchOneMusic(value);
+
+  const movie = {
+    image: Object.values(track?.album?.image[3])[0],
+    rating: track.vote_average,
+    name: `${track.name} - ${track.artist.name}`,
+    officialSite: track.url,
+    premiered: track.wiki?.published,
+  };
+
+  dispatch(addDetailsOfOne(movie));
 };
 
 //------------------------------------------------------
-
-export const addListResults = item => ({
-  type: ADD_LIST_RESULTS,
-  item,
-});
 
 export const addDetailsOfOne = item => ({
   type: ADD_DETAILS_OF_ONE,
