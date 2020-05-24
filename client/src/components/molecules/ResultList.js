@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from 'react-query';
 
 import {
   getOneMovie,
   getOneTvSeries,
-  addDetailsOfOne,
+  getOneBook,
 } from '../../data/actions/searchResults';
 
 import ElementList from '../atoms/ElementList';
 import DetailsOfOne from '../molecules/DetailsOfOne';
-import { FIND_ONE_GAME } from '../../data/apollo/games';
 import Indicator from '../atoms/Indicator';
 
 const StyledWrapper = styled.div`
@@ -27,121 +26,96 @@ const StyledList = styled.ul`
 `;
 //"1431993600"
 const ResultList = ({
-  list,
+  useFunc,
+  value,
   getOneTvSeries,
   activeType,
   getOneBook,
   getOneMovie,
-  addDetailsOfOne,
 }) => {
+  console.log(useFunc, value);
+
   let [activeDetails, toggleDetails] = useState(false);
-  const [getOneGame, { loading }] = useLazyQuery(FIND_ONE_GAME, {
-    onCompleted: resp => {
-      const data = resp.findGameById[0];
-      const time = new Date(+data.first_release_date * 1000);
-      const game = {
-        image: `https:${data.cover[0].url}`,
-        rating: Math.floor(data.rating),
-        name: data.name,
-        officialSite: data.url,
-        premiered: `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`,
-      };
-      addDetailsOfOne(game);
-    },
-  });
+
+  let { data, isFetching } = useQuery(['list', value], useFunc);
+
   const pickOne = id => {
     console.log(id, activeType);
     if (activeType === 'tvseries') getOneTvSeries(id);
     if (activeType === 'books') getOneBook(id);
     if (activeType === 'films') getOneMovie(id);
-    if (activeType === 'games') getOneGame({ variables: { id } });
 
     toggleDetails((activeDetails = true));
   };
-
-  console.log(list);
-
+  console.log(data);
   let resultList;
-  switch (activeType) {
-    case 'tvseries':
-      resultList = list.map(el => (
-        <ElementList
-          key={el.show.id}
-          id={el.show.id}
-          title={el.show.name}
-          img={el.show.image && el.show.image.medium}
-          pickOne={pickOne}
-        />
-      ));
+  if (data.length > 0) {
+    switch (activeType) {
+      case 'tvseries':
+        resultList = data.map(el => (
+          <ElementList
+            key={el.show.id}
+            id={el.show.id}
+            title={el.show.name}
+            img={el.show.image && el.show.image.medium}
+            pickOne={pickOne}
+          />
+        ));
+        break;
 
-      break;
+      case 'books':
+        if (data) {
+          resultList = data.map(el => (
+            <ElementList
+              key={el.id}
+              id={el.id}
+              title={el.volumeInfo.title}
+              img={
+                el.volumeInfo.imageLinks &&
+                el.volumeInfo.imageLinks.smallThumbnail
+              }
+              pickOne={pickOne}
+            />
+          ));
+        }
+        break;
 
-    case 'games':
-      resultList = list.map(el => (
-        <ElementList
-          key={el.id}
-          id={el.id}
-          title={el.name}
-          img={el.cover && el.cover[0].url}
-          pickOne={pickOne}
-        />
-      ));
-
-      break;
-
-    case 'books':
-      if (list.items) {
-        resultList = list.items.map(el => (
+      case 'films':
+        resultList = data.map(el => (
           <ElementList
             key={el.id}
             id={el.id}
-            title={el.volumeInfo.title}
+            title={el.title}
             img={
-              el.volumeInfo.imageLinks &&
-              el.volumeInfo.imageLinks.smallThumbnail
+              el.poster_path &&
+              `https://image.tmdb.org/t/p/w500/${el.poster_path}`
             }
             pickOne={pickOne}
           />
         ));
-      }
+        break;
 
-      break;
+      case 'music':
+        resultList = data.map(el => (
+          <ElementList
+            key={el.url}
+            id={el.id}
+            title={`${el.name} - ${el.artist}`}
+            img={el.image && el.image[1].text}
+            pickOne={pickOne}
+          />
+        ));
 
-    case 'films':
-      resultList = list.map(el => (
-        <ElementList
-          key={el.id}
-          id={el.id}
-          title={el.title}
-          img={
-            el.poster_path &&
-            `https://image.tmdb.org/t/p/w500/${el.poster_path}`
-          }
-          pickOne={pickOne}
-        />
-      ));
+        break;
 
-      break;
-
-    case 'music':
-      resultList = list.map(el => (
-        <ElementList
-          key={el.url}
-          id={el.id}
-          title={`${el.name} - ${el.artist}`}
-          img={el.image && el.image[1].text}
-          pickOne={pickOne}
-        />
-      ));
-
-      break;
-
-    default:
-      break;
+      default:
+        break;
+    }
   }
+
   return (
     <StyledWrapper>
-      {loading && <Indicator />}
+      {isFetching && <Indicator />}
       <StyledList>{resultList}</StyledList>
       {activeDetails && <DetailsOfOne toggleDetails={toggleDetails} />}
     </StyledWrapper>
@@ -154,9 +128,8 @@ const mapStateToProps = ({ activeType }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getOneTvSeries: value => dispatch(getOneTvSeries(value)),
-  getOneBook: value => dispatch(getOneTvSeries(value)),
+  getOneBook: value => dispatch(getOneBook(value)),
   getOneMovie: value => dispatch(getOneMovie(value)),
-  addDetailsOfOne: value => dispatch(addDetailsOfOne(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

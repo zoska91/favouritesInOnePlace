@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { useLazyQuery } from '@apollo/react-hooks';
 
-import {
-  getListOfBooks,
-  getListOfMusics,
-  addListResults,
-  getListOfMovies,
-} from '../../data/actions/searchResults';
-import useTvseriesList from '../../data/fetch/tvSeries.fetch';
+import { fetchTvSeries } from '../../data/fetch/tvSeries.fetch';
+import { fetchMusics } from '../../data/fetch/music.fetch';
+import { fetchMovies } from '../../data/fetch/movies.fetch';
+import { fetchBooks } from '../../data/fetch/books.fetch';
 
 import ResultList from '../molecules/ResultList';
-import Indicator from '../atoms/Indicator';
-import { FIND_ALL_GAMES_QUERY } from '../../data/apollo/games';
+import ResultListGames from '../molecules/ResultListGames';
 
 const StyledInput = styled.input`
   text-align: center;
@@ -25,41 +20,35 @@ const StyledInput = styled.input`
   margin-bottom: 2vh;
 `;
 
-const Search = ({
-  searchResultsList,
-  activeType,
-  addListResults,
-  getListOfBooks,
-  getListOfMovies,
-  getListOfMusics,
-}) => {
-  let [inputValue, setInputValue] = useState('');
-  const [list, setList] = useState([]);
-  //get games list
-  const [getListGames, { loading }] = useLazyQuery(FIND_ALL_GAMES_QUERY, {
-    onCompleted: data => setList(data.findGameByName),
-  });
+const Search = ({ activeType }) => {
+  const [inputValue, setInputValue] = useState('');
+  const [showList, setShowList] = useState(false);
 
-  // get tv series list
-  const {
-    status,
-    data,
-    error,
-    refetch: refetchTvSeries,
-    isFetching,
-  } = useTvseriesList(inputValue);
-  console.log(status, data, error, refetchTvSeries, isFetching);
+  let func = fetchTvSeries;
+
+  switch (activeType) {
+    case 'tvseries':
+      func = fetchTvSeries;
+      break;
+
+    case 'books':
+      func = fetchBooks;
+      break;
+
+    case 'films':
+      func = fetchMovies;
+      break;
+    case 'music':
+      func = fetchMusics;
+      break;
+
+    default:
+      break;
+  }
 
   const onSubmit = e => {
     e.preventDefault();
-    if (activeType === 'tvseries') refetchTvSeries();
-    if (activeType === 'books') getListOfBooks(inputValue);
-    if (activeType === 'films') getListOfMovies(inputValue);
-    if (activeType === 'music') getListOfMusics(inputValue);
-
-    if (activeType === 'games') {
-      getListGames({ variables: { name: inputValue } });
-    }
+    setShowList(true);
   };
 
   return (
@@ -74,24 +63,18 @@ const Search = ({
           onChange={e => setInputValue(e.target.value)}
         />
       </form>
-
-      {loading || (status === 'loading' && <Indicator />)}
-      {status === 'error' && <span>error.message</span>}
-      <div>{isFetching ? <Indicator /> : null}</div>
-      {searchResultsList && <ResultList list={list} />}
+      {showList &&
+        (activeType === 'games' ? (
+          <ResultListGames value={inputValue} />
+        ) : (
+          <ResultList value={inputValue} useFunc={func} />
+        ))}
     </>
   );
 };
 
 const mapStateToProps = ({ searchResults, activeType }) => ({
-  searchResultsList: searchResults.list,
   activeType: activeType.name,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getListOfBooks: value => dispatch(getListOfBooks(value)),
-  getListOfMovies: value => dispatch(getListOfMovies(value)),
-  getListOfMusics: value => dispatch(getListOfMusics(value)),
-  addListResults: value => dispatch(addListResults(value)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps)(Search);

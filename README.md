@@ -32,13 +32,14 @@ I use libraries:
 - sequelize
 
 Some API:
-[https://www.googleapis.com/books/v1](https://www.googleapis.com/books/v1)
-[https://api.themoviedb.org/](https://api.themoviedb.org/)
-[http://ws.audioscrobbler.com/2](http://ws.audioscrobbler.com/2)
-[http://api.tvmaze.com/](http://api.tvmaze.com/)
-[https://api.igdb.com](https://api.igdb.com)
 
-##=========================
+- [https://www.googleapis.com/books/v1](https://www.googleapis.com/books/v1)
+- [https://api.themoviedb.org/](https://api.themoviedb.org/)
+- [http://ws.audioscrobbler.com/2](http://ws.audioscrobbler.com/2)
+- [http://api.tvmaze.com/](http://api.tvmaze.com/)
+- [https://api.igdb.com](https://api.igdb.com)
+
+## =========================
 
 edit 7.02.2020
 I added back-end in NodeJS (experess) with api in grahql.
@@ -47,7 +48,8 @@ to run app (with server):
 
 ### `npm run dev`
 
-##=========================
+## =========================
+
 edit 23.05.2020
 
 for practice:

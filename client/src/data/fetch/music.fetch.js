@@ -1,6 +1,6 @@
 import { apiKeys } from '../../config/api-keys';
 
-export const fetchMusics = async ({ value }) => {
+export const fetchMusics = async (key, value) => {
   const resp = await fetch(
     `http://ws.audioscrobbler.com/2.0/?method=track.search&track=${value}&api_key=${apiKeys.music}&format=json`,
 
@@ -10,8 +10,7 @@ export const fetchMusics = async ({ value }) => {
   );
 
   const json = await resp.json();
-  console.log(json.results);
-  return json.results;
+  return json.results.trackmatches.track;
 };
 
 export const fetchOneMusic = async value => {
