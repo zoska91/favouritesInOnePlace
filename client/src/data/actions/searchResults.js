@@ -42,7 +42,6 @@ export const getOneBook = value => async dispatch => {
 
 export const getOneMovie = value => async dispatch => {
   const details = await fetchOneMovie(value);
-  console.log(details);
 
   const movie = {
     image:
@@ -53,17 +52,24 @@ export const getOneMovie = value => async dispatch => {
     officialSite: details.homepage,
     premiered: details.release_date,
   };
+
   dispatch(addDetailsOfOne(movie));
 };
 
 // MUSIC ----------------------------------------------
 
 export const getOneMusic = value => async dispatch => {
-  console.log(value);
-  const details = await fetchOneMusic(value);
-  console.log(details);
+  const { track } = await fetchOneMusic(value);
 
-  dispatch(addDetailsOfOne(details));
+  const movie = {
+    image: Object.values(track?.album?.image[3])[0],
+    rating: track.vote_average,
+    name: `${track.name} - ${track.artist.name}`,
+    officialSite: track.url,
+    premiered: track.wiki?.published,
+  };
+
+  dispatch(addDetailsOfOne(movie));
 };
 
 //------------------------------------------------------

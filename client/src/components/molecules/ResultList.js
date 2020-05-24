@@ -7,6 +7,7 @@ import {
   getOneMovie,
   getOneTvSeries,
   getOneBook,
+  getOneMusic,
 } from '../../data/actions/searchResults';
 
 import ElementList from '../atoms/ElementList';
@@ -32,23 +33,23 @@ const ResultList = ({
   activeType,
   getOneBook,
   getOneMovie,
+  getOneMusic,
 }) => {
-  console.log(useFunc, value);
-
   let [activeDetails, toggleDetails] = useState(false);
 
   let { data, isFetching } = useQuery(['list', value], useFunc);
 
   const pickOne = id => {
-    console.log(id, activeType);
     if (activeType === 'tvseries') getOneTvSeries(id);
     if (activeType === 'books') getOneBook(id);
     if (activeType === 'films') getOneMovie(id);
+    if (activeType === 'music') getOneMusic(id);
 
     toggleDetails((activeDetails = true));
   };
-  console.log(data);
+
   let resultList;
+
   if (data.length > 0) {
     switch (activeType) {
       case 'tvseries':
@@ -98,10 +99,10 @@ const ResultList = ({
       case 'music':
         resultList = data.map(el => (
           <ElementList
-            key={el.url}
-            id={el.id}
+            key={el.mbid}
+            id={el.mbid}
             title={`${el.name} - ${el.artist}`}
-            img={el.image && el.image[1].text}
+            img={el.image && Object.values(el.image[0])[0]}
             pickOne={pickOne}
           />
         ));
@@ -130,6 +131,7 @@ const mapDispatchToProps = dispatch => ({
   getOneTvSeries: value => dispatch(getOneTvSeries(value)),
   getOneBook: value => dispatch(getOneBook(value)),
   getOneMovie: value => dispatch(getOneMovie(value)),
+  getOneMusic: value => dispatch(getOneMusic(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

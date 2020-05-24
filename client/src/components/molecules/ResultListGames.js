@@ -31,15 +31,17 @@ const ResultListGames = ({ value, addDetailsOfOne }) => {
 
   const [getOneGame] = useLazyQuery(FIND_ONE_GAME, {
     onCompleted: resp => {
-      console.log(resp);
       const data = resp.findGameById[0];
-      const time = new Date(+data.first_release_date * 1000);
+      const time = data.first_release_date
+        ? new Date(+data.first_release_date * 1000)
+        : null;
       const game = {
-        image: `https:${data.cover[0].url}`,
+        image: data.cover && `https:${data.cover[0].url}`,
         rating: Math.floor(data.rating),
         name: data.name,
         officialSite: data.url,
-        premiered: `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`,
+        premiered:
+          time && `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`,
       };
       addDetailsOfOne(game);
     },
