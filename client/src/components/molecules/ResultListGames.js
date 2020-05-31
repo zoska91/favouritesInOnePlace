@@ -32,10 +32,12 @@ const ResultListGames = ({ value, addDetailsOfOne }) => {
   const [getOneGame] = useLazyQuery(FIND_ONE_GAME, {
     onCompleted: resp => {
       const data = resp.findGameById[0];
+      console.log(data);
       const time = data.first_release_date
         ? new Date(+data.first_release_date * 1000)
         : null;
       const game = {
+        id: data.id,
         image: data.cover && `https:${data.cover[0].url}`,
         rating: Math.floor(data.rating),
         name: data.name,

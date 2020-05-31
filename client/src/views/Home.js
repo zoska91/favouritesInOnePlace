@@ -1,10 +1,8 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 import Indicator from '../components/atoms/Indicator';
 
 import Search from '../components/organism/Search';
-import Title from '../components/atoms/Title';
 
 const StyledWrapper = styled.main`
   width: 100vw;
@@ -14,10 +12,9 @@ const StyledWrapper = styled.main`
   flex-direction: column;
 `;
 
-const Home = ({ activeTypeName }) => {
+const Home = () => {
   return (
     <StyledWrapper>
-      <Title>{activeTypeName}</Title>
       <Suspense fallback={<Indicator />}>
         <Search />
       </Suspense>
@@ -25,8 +22,4 @@ const Home = ({ activeTypeName }) => {
   );
 };
 
-const mapStateToProps = ({ activeType }) => ({
-  activeTypeName: activeType.name,
-});
-
-export default connect(mapStateToProps, null)(Home);
+export default Home;

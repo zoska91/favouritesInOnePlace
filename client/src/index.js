@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import store from './data/store';
@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ReactQueryConfigProvider } from 'react-query';
+import Indicator from './components/atoms/Indicator';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
@@ -22,11 +23,13 @@ const queryConfig = {
 
 ReactDOM.render(
   <ReactQueryConfigProvider config={queryConfig}>
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ApolloProvider>
+    <Suspense fallback={<Indicator />}>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ApolloProvider>
+    </Suspense>
   </ReactQueryConfigProvider>,
   document.getElementById('root')
 );

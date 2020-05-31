@@ -57,7 +57,7 @@ const Root = styled.div`
 
 const Indicator = () => (
   <Root className='loadingio-spinner-ripple-xvso974sx3b'>
-    <div class='ldio-qmjujd0lqs9'>
+    <div className='ldio-qmjujd0lqs9'>
       <div></div>
       <div></div>
     </div>

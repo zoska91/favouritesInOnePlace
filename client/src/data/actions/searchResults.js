@@ -10,8 +10,9 @@ export const RESET_LIST = 'RESET_LIST';
 
 export const getOneTvSeries = value => async dispatch => {
   const details = await fetchOneTvSeries(value);
-
+  console.log(details);
   const tvseries = {
+    id: details.id,
     image: details.image?.medium,
     rating: details.rating?.average,
     name: details.name,
@@ -26,6 +27,7 @@ export const getOneTvSeries = value => async dispatch => {
 
 export const getOneBook = value => async dispatch => {
   const { volumeInfo } = await fetchOneBooks(value);
+  console.log(value);
 
   const book = {
     image: volumeInfo.imageLinks?.thumbnail,
@@ -42,6 +44,7 @@ export const getOneBook = value => async dispatch => {
 
 export const getOneMovie = value => async dispatch => {
   const details = await fetchOneMovie(value);
+  console.log(details);
 
   const movie = {
     image:
@@ -60,6 +63,7 @@ export const getOneMovie = value => async dispatch => {
 
 export const getOneMusic = value => async dispatch => {
   const { track } = await fetchOneMusic(value);
+  console.log(value);
 
   const movie = {
     image: Object.values(track?.album?.image[3])[0],

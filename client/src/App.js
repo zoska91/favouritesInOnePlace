@@ -5,14 +5,17 @@ import { connect } from 'react-redux';
 import { useQuery } from '@apollo/react-hooks';
 
 import { setUser } from './data/actions/user';
+import { GET_USER_INFO } from './data/apollo/user';
 
-import Home from './views/Home';
+import Indicator from './components/atoms/Indicator';
 import MainTemplate from './templates/MainTemplate';
 import Header from './components/organism/Header';
-import { GET_USER_INFO } from './data/apollo/user';
-import Indicator from './components/atoms/Indicator';
+
+import Home from './views/Home';
+import FavouritesPage from './views/FavouritesPage';
 
 const App = ({ setUserFn }) => {
+  //check is login
   const { loading } = useQuery(GET_USER_INFO, {
     onCompleted: data => setUserFn(data.me),
   });
@@ -24,7 +27,8 @@ const App = ({ setUserFn }) => {
       <MainTemplate>
         <Header />
         <Switch>
-          <Route path={routes.home} component={Home} />
+          <Route exact path={routes.home} component={Home} />
+          <Route exact path={routes.favourites} component={FavouritesPage} />
         </Switch>
       </MainTemplate>
     </Router>

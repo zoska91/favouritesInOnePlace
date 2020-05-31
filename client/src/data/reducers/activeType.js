@@ -1,8 +1,8 @@
 import { CHANGE_ACTIVE_TYPE, SET_NAME_TYPE } from '../actions/activeTyp';
 
 const INITIAL_STATE = {
-  name: 'games',
-  index: 3,
+  name: 'books',
+  index: 2,
 };
 
 const activeTypeReducer = (state = INITIAL_STATE, action) => {

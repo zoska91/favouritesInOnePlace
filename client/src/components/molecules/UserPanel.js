@@ -72,8 +72,6 @@ const UserPanel = ({ user, toggleSidebar }) => {
   const onSubmit = e => {
     e.preventDefault();
 
-    console.log(firstName, lastName, email, password, confirmPassword);
-
     if (password !== confirmPassword) {
       setErrors('Password must be the same');
       console.log(errors);

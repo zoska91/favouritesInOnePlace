@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Flicking from '@egjs/react-flicking';
 import { connect } from 'react-redux';
 import { queryCache } from 'react-query';
+import { useLocation } from 'react-router-dom';
 
 import { changeActiveType } from '../../data/actions/activeTyp';
 import { setNameType } from '../../data/actions/activeTyp';
@@ -48,6 +49,8 @@ const Nav = ({
     setNameTypeFn(name[0].name);
   };
 
+  let { pathname } = useLocation();
+
   return (
     <StyledWrapper activeGroup={activeTypeIndex}>
       <Flicking
@@ -61,8 +64,12 @@ const Nav = ({
         <Icon icon={ImgBook} activeGroup={activeTypeIndex} />
         <Icon icon={ImgGame} activeGroup={activeTypeIndex} />
         <Icon icon={ImgTvSeries} activeGroup={activeTypeIndex} />
-        {isUserLogin && <Icon icon={ImgLink} activeGroup={activeTypeIndex} />}
-        {isUserLogin && <Icon icon={ImgNote} activeGroup={activeTypeIndex} />}
+        {isUserLogin && pathname === '/favourites' && (
+          <Icon icon={ImgLink} activeGroup={activeTypeIndex} />
+        )}
+        {isUserLogin && pathname === '/favourites' && (
+          <Icon icon={ImgNote} activeGroup={activeTypeIndex} />
+        )}
       </Flicking>
     </StyledWrapper>
   );

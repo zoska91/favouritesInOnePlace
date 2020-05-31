@@ -1,4 +1,4 @@
-import { ADD_DETAILS_OF_ONE, RESET_LIST } from '../actions/searchResults';
+import { ADD_DETAILS_OF_ONE } from '../actions/searchResults';
 
 const INITIAL_STATE = {
   detailsOfOne: [],

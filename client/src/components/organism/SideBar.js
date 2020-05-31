@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import HomeIcon from '../../assets/home.png';
 import UserIcon from '../../assets/human.png';
 import SearchIcon from '../../assets/search.png';
+import HeartIcon from '../../assets/heart.png';
+
 import Login from '../molecules/Login';
 import SignUp from '../molecules/SignUp';
 import UserPanel from '../molecules/UserPanel';
@@ -58,7 +60,7 @@ const StyledList = styled.ul`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -100,6 +102,8 @@ const SideBar = ({ isUserLogin }) => {
   let [isOpen, toggleSidebar] = useState(false);
   let [typeOfUserPanel, toggleUserPanel] = useState('login');
 
+  let { pathname } = useLocation();
+
   const setTypeOfUserPanel = value => {
     toggleUserPanel((typeOfUserPanel = value));
   };
@@ -134,12 +138,24 @@ const SideBar = ({ isUserLogin }) => {
             alt='Icon made by Freeplk from www.flaticon.com'
           />
         </StyledIcon>
-        {isUserLogin && (
+        {isUserLogin && pathname === '/favourites' && (
           <StyledIcon>
-            <img
-              src={SearchIcon}
-              alt='Icon made by Freeplk from www.flaticon.com'
-            />
+            <Link to='/'>
+              <img
+                src={SearchIcon}
+                alt='Icon made by Freeplk from www.flaticon.com'
+              />
+            </Link>
+          </StyledIcon>
+        )}
+        {isUserLogin && pathname === '/' && (
+          <StyledIcon>
+            <Link to='/favourites'>
+              <img
+                src={HeartIcon}
+                alt='Icon made by Freeplk from www.flaticon.com'
+              />
+            </Link>
           </StyledIcon>
         )}
       </StyledList>

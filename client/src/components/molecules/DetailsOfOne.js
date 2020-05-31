@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { useMutation } from '@apollo/react-hooks';
 
 import ImgNoImage from '../../assets/noImage.png';
 import ImgButtonAdd from '../../assets/add.png';
@@ -8,6 +9,7 @@ import ImgButtonX from '../../assets/X.png';
 
 import Indicator from '../atoms/Indicator';
 import Button from '../atoms/Button';
+import { CREATE_FAVOURITE } from '../../data/apollo/favourites';
 
 const StyledWrapper = styled.div`
   position: fixed;
@@ -91,8 +93,23 @@ const StyledButtons = styled.div`
   justify-content: space-around;
 `;
 
-const DetailsOfOne = ({ details, toggleDetails }) => {
+const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
   console.log(details);
+
+  const [createData, { data, loading, error }] = useMutation(CREATE_FAVOURITE);
+
+  console.log(data, loading, error);
+
+  const createFavourite = () => {
+    console.log(activeTypeId, details.id, details.officialSite);
+    createData({
+      variables: {
+        text: details.id + '',
+        groupId: activeTypeId,
+        link: details.officialSite,
+      },
+    });
+  };
 
   return (
     <StyledWrapper>
@@ -118,7 +135,7 @@ const DetailsOfOne = ({ details, toggleDetails }) => {
               img={ImgButtonX}
               onClick={() => toggleDetails((toggleDetails = false))}
             ></Button>
-            <Button img={ImgButtonAdd}></Button>
+            <Button img={ImgButtonAdd} onClick={createFavourite}></Button>
           </StyledButtons>
         </>
       )}
@@ -126,8 +143,9 @@ const DetailsOfOne = ({ details, toggleDetails }) => {
   );
 };
 
-const mapStateToProps = ({ searchResults }) => ({
+const mapStateToProps = ({ searchResults, activeType }) => ({
   details: searchResults.detailsOfOne,
+  activeTypeId: activeType.index + 1,
 });
 
 export default connect(mapStateToProps, null)(DetailsOfOne);

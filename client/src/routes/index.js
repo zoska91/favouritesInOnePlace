@@ -1,4 +1,5 @@
 export const routes = {
   home: '/',
-  notes: '/notes'
+  notes: '/notes',
+  favourites: '/favourites',
 };
