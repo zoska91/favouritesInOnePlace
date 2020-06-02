@@ -7,3 +7,14 @@ export const CREATE_FAVOURITE = gql`
     }
   }
 `;
+
+export const GET_ALL_DATA = gql`
+  query allData {
+    allData {
+      id
+      text
+      link
+      groupId
+    }
+  }
+`;
