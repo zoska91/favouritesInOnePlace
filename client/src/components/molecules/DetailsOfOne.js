@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { useMutation } from '@apollo/react-hooks';
+import ReactNotifications from 'react-notifications-component';
+import { store } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
 
 import ImgNoImage from '../../assets/noImage.png';
 import ImgButtonAdd from '../../assets/add.png';
@@ -94,14 +97,41 @@ const StyledButtons = styled.div`
 `;
 
 const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
-  console.log(details);
-
-  const [createData, { data, loading, error }] = useMutation(CREATE_FAVOURITE);
-
-  console.log(data, loading, error);
+  const [createData, { data, loading, error }] = useMutation(CREATE_FAVOURITE, {
+    onCompleted(data) {
+      if (data.createData) {
+        store.addNotification({
+          title: 'Successfull!',
+          message: 'and you will not forget!',
+          type: 'danger',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+          dismiss: {
+            duration: 1000,
+            onScreen: true,
+          },
+        });
+      } else {
+        store.addNotification({
+          title: 'Something is wrong',
+          message: 'try again!',
+          type: 'success',
+          insert: 'top',
+          container: 'top-right',
+          animationIn: ['animated', 'fadeIn'],
+          animationOut: ['animated', 'fadeOut'],
+          dismiss: {
+            duration: 1000,
+            onScreen: true,
+          },
+        });
+      }
+    },
+  });
 
   const createFavourite = () => {
-    console.log(activeTypeId, details.id, details.officialSite);
     createData({
       variables: {
         text: details.id + '',
@@ -117,6 +147,8 @@ const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
         <Indicator />
       ) : (
         <>
+          <ReactNotifications />
+
           <StyledImg>
             <img src={details.image ? details.image : ImgNoImage} alt='foto' />
           </StyledImg>
@@ -137,6 +169,7 @@ const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
             ></Button>
             <Button img={ImgButtonAdd} onClick={createFavourite}></Button>
           </StyledButtons>
+          {loading && <Indicator />}
         </>
       )}
     </StyledWrapper>

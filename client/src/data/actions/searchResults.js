@@ -10,7 +10,6 @@ export const RESET_LIST = 'RESET_LIST';
 
 export const getOneTvSeries = value => async dispatch => {
   const details = await fetchOneTvSeries(value);
-  console.log(details);
   const tvseries = {
     id: details.id,
     image: details.image?.medium,
@@ -27,9 +26,9 @@ export const getOneTvSeries = value => async dispatch => {
 
 export const getOneBook = value => async dispatch => {
   const { volumeInfo } = await fetchOneBooks(value);
-  console.log(value);
 
   const book = {
+    id: value,
     image: volumeInfo.imageLinks?.thumbnail,
     rating: volumeInfo.averageRating,
     name: volumeInfo.title,
@@ -44,9 +43,9 @@ export const getOneBook = value => async dispatch => {
 
 export const getOneMovie = value => async dispatch => {
   const details = await fetchOneMovie(value);
-  console.log(details);
 
   const movie = {
+    id: value,
     image:
       details.poster_path &&
       `https://image.tmdb.org/t/p/w500/${details.poster_path}`,
@@ -63,17 +62,17 @@ export const getOneMovie = value => async dispatch => {
 
 export const getOneMusic = value => async dispatch => {
   const { track } = await fetchOneMusic(value);
-  console.log(value);
 
-  const movie = {
-    image: Object.values(track?.album?.image[3])[0],
+  const music = {
+    id: value,
+    image: track?.album?.image[3] && Object.values(track?.album?.image[3])[0],
     rating: track.vote_average,
     name: `${track.name} - ${track.artist.name}`,
     officialSite: track.url,
     premiered: track.wiki?.published,
   };
 
-  dispatch(addDetailsOfOne(movie));
+  dispatch(addDetailsOfOne(music));
 };
 
 //------------------------------------------------------
