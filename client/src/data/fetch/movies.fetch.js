@@ -19,8 +19,20 @@ export const fetchOneMovie = async value => {
       method: 'GET',
     }
   );
-  const json = await resp.json();
-  return json;
+  const details = await resp.json();
+
+  const movie = {
+    id: value,
+    image:
+      details.poster_path &&
+      `https://image.tmdb.org/t/p/w500/${details.poster_path}`,
+    rating: details.vote_average || null,
+    name: details.title,
+    officialSite: details.homepage,
+    premiered: details.release_date,
+  };
+
+  return movie;
 };
 
 const useMoviesList = value => {

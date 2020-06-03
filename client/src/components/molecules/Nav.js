@@ -33,7 +33,7 @@ const Nav = ({
 }) => {
   const types = [
     { index: 0, name: 'music' },
-    { index: 1, name: 'films' },
+    { index: 1, name: 'movies' },
     { index: 2, name: 'books' },
     { index: 3, name: 'games' },
     { index: 4, name: 'tvseries' },
@@ -42,7 +42,7 @@ const Nav = ({
   ];
 
   const activeType = e => {
-    toggleSearchlist(false);
+    if (pathname === '/') toggleSearchlist(false);
     queryCache.clear();
     changeTypeFn(e.index);
     const name = types.filter(el => el.index === e.index);

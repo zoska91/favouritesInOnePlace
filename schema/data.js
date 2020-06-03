@@ -6,6 +6,8 @@ type Data {
   link: String
   userId: Int!
   user: User!
+  Img: String
+  title: String
 }
 
 extend type Query {
@@ -14,6 +16,6 @@ extend type Query {
 }
 
 extend type Mutation {
-  createData(text: String, groupId: Int!, link: String, userId: Int): Data
+  createData(text: String, groupId: Int!, link: String, userId: Int, Img: String, title: String): Data
 }
 `;

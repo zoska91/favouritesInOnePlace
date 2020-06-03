@@ -9,70 +9,31 @@ export const RESET_LIST = 'RESET_LIST';
 //TVSERIES ------------------------------------------------
 
 export const getOneTvSeries = value => async dispatch => {
-  const details = await fetchOneTvSeries(value);
-  const tvseries = {
-    id: details.id,
-    image: details.image?.medium,
-    rating: details.rating?.average,
-    name: details.name,
-    officialSite: details.url,
-    premiered: details.premiered,
-  };
+  const data = await fetchOneTvSeries(value);
+  console.log(data);
 
-  dispatch(addDetailsOfOne(tvseries));
+  dispatch(addDetailsOfOne(data));
 };
 
 //BOOKS ------------------------------------------------
 
-export const getOneBook = value => async dispatch => {
-  const { volumeInfo } = await fetchOneBooks(value);
-
-  const book = {
-    id: value,
-    image: volumeInfo.imageLinks?.thumbnail,
-    rating: volumeInfo.averageRating,
-    name: volumeInfo.title,
-    officialSite: volumeInfo.infoLink,
-    premiered: volumeInfo.publishedDate,
-  };
-
-  dispatch(addDetailsOfOne(book));
+export const getOneBook = value => async (dispatch, state) => {
+  const data = await fetchOneBooks(value);
+  dispatch(addDetailsOfOne(data));
 };
 
-//FILMS ------------------------------------------------
+//MOVIES ------------------------------------------------
 
 export const getOneMovie = value => async dispatch => {
-  const details = await fetchOneMovie(value);
-
-  const movie = {
-    id: value,
-    image:
-      details.poster_path &&
-      `https://image.tmdb.org/t/p/w500/${details.poster_path}`,
-    rating: details.vote_average,
-    name: details.title,
-    officialSite: details.homepage,
-    premiered: details.release_date,
-  };
-
-  dispatch(addDetailsOfOne(movie));
+  const data = await fetchOneMovie(value);
+  dispatch(addDetailsOfOne(data));
 };
 
 // MUSIC ----------------------------------------------
 
 export const getOneMusic = value => async dispatch => {
-  const { track } = await fetchOneMusic(value);
-
-  const music = {
-    id: value,
-    image: track?.album?.image[3] && Object.values(track?.album?.image[3])[0],
-    rating: track.vote_average,
-    name: `${track.name} - ${track.artist.name}`,
-    officialSite: track.url,
-    premiered: track.wiki?.published,
-  };
-
-  dispatch(addDetailsOfOne(music));
+  const data = await fetchOneMusic(value);
+  dispatch(addDetailsOfOne(data));
 };
 
 //------------------------------------------------------

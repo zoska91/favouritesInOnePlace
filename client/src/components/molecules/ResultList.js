@@ -37,17 +37,19 @@ const ResultList = ({
 }) => {
   let [activeDetails, toggleDetails] = useState(false);
 
-  let { data, isFetching } = useQuery(['list', value], useFunc);
+  // for one details
 
   const pickOne = id => {
     if (activeType === 'tvseries') getOneTvSeries(id);
     if (activeType === 'books') getOneBook(id);
-    if (activeType === 'films') getOneMovie(id);
+    if (activeType === 'movies') getOneMovie(id);
     if (activeType === 'music') getOneMusic(id);
 
     toggleDetails((activeDetails = true));
   };
 
+  // for list
+  let { data, isFetching } = useQuery(['list', value], useFunc);
   let resultList;
 
   if (data.length > 0) {
@@ -81,7 +83,7 @@ const ResultList = ({
         }
         break;
 
-      case 'films':
+      case 'movies':
         resultList = data.map(el => (
           <ElementList
             key={el.id}

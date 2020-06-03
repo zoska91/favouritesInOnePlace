@@ -35,7 +35,7 @@ const Search = ({ activeType, searchListVisible, toggleSearchlist }) => {
       func = fetchBooks;
       break;
 
-    case 'films':
+    case 'movies':
       func = fetchMovies;
       break;
     case 'music':

@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
   width: 100vw;
 `;
 
-const MainTemplate = ({ children, activeTypeName }) => {
+const MainTemplate = ({ children }) => {
   return (
     <StyledWrapper>
       <GlobalStyle />

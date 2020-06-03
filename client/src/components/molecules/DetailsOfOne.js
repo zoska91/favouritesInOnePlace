@@ -103,7 +103,7 @@ const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
         store.addNotification({
           title: 'Successfull!',
           message: 'and you will not forget!',
-          type: 'danger',
+          type: 'success',
           insert: 'top',
           container: 'top-right',
           animationIn: ['animated', 'fadeIn'],
@@ -113,11 +113,14 @@ const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
             onScreen: true,
           },
         });
+
+        setTimeout(() => toggleDetails(false), 1100);
       } else {
+        console.log(error);
         store.addNotification({
           title: 'Something is wrong',
           message: 'try again!',
-          type: 'success',
+          type: 'danger',
           insert: 'top',
           container: 'top-right',
           animationIn: ['animated', 'fadeIn'],
@@ -130,13 +133,15 @@ const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
       }
     },
   });
-
+  console.log(details);
   const createFavourite = () => {
     createData({
       variables: {
         text: details.id + '',
         groupId: activeTypeId,
         link: details.officialSite,
+        img: details.image,
+        title: details.name,
       },
     });
   };
@@ -178,7 +183,7 @@ const DetailsOfOne = ({ details, toggleDetails, activeTypeId }) => {
 
 const mapStateToProps = ({ searchResults, activeType }) => ({
   details: searchResults.detailsOfOne,
-  activeTypeId: activeType.index + 1,
+  activeTypeId: activeType.index,
 });
 
 export default connect(mapStateToProps, null)(DetailsOfOne);

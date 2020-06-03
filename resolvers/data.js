@@ -21,9 +21,9 @@ export default {
   Mutation: {
     createData: combineResolvers(
       isAuthenticated,
-      (parent, { text, groupId, link }, { models, userId }) => {
+      (parent, { text, groupId, link, Img, title }, { models, userId }) => {
         console.log(text, groupId, link, userId);
-        return models.Data.create({ text, groupId, link, userId });
+        return models.Data.create({ text, groupId, link, userId, Img, title });
       }
     ),
   },

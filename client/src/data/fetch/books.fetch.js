@@ -17,5 +17,16 @@ export const fetchOneBooks = async value => {
     }
   );
   const json = await resp.json();
-  return json;
+
+  const { volumeInfo } = json;
+  const book = {
+    id: value,
+    image: volumeInfo.imageLinks?.thumbnail,
+    rating: volumeInfo.averageRating,
+    name: volumeInfo.title,
+    officialSite: volumeInfo.infoLink,
+    premiered: volumeInfo.publishedDate,
+  };
+
+  return book;
 };

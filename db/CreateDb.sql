@@ -20,9 +20,18 @@ CREATE TABLE favourites.Data (
     updatedAt DATETIME NOT NULL 
 )
 
-CREATE TABLE favourites.Group ( 
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(128),
-    createdAt DATETIME NOT NULL, 
-    updatedAt DATETIME NOT NULL 
+CREATE TABLE favourites.Groups ( 
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(128)
 )
+
+select * from favourites.Groups 
+INSERT INTO favourites.Groups (id, name) 
+values 
+(0, 'music'), 
+(1, 'movies'),
+(2, 'books'),
+(3, 'games'),
+(4, 'tvseries'),
+(5, 'links'),
+(6, 'notes')

@@ -21,5 +21,17 @@ export const fetchOneMusic = async value => {
     }
   );
   const json = await resp.json();
-  return json;
+
+  console.log(json);
+  const { track } = json;
+  const music = {
+    id: value,
+    image: track?.album?.image[3] && Object.values(track?.album?.image[3])[0],
+    rating: track.vote_average,
+    name: `${track.name} - ${track.artist.name}`,
+    officialSite: track.url,
+    premiered: track.wiki?.published,
+  };
+
+  return music;
 };
